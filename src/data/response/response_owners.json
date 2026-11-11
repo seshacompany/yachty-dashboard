@@ -1,0 +1,415 @@
+{
+  "success": true,
+  "message": "تمت العملية بنجاح",
+  "data": {
+    "items": [
+      {
+        "id": "661ef6f9-ad8c-485b-862b-ac2e85d15501",
+        "createdAt": "2026-08-09T15:06:40.035Z",
+        "updatedAt": "2026-08-09T15:06:40.035Z",
+        "user": {
+          "id": "c7d5facc-28af-46bb-9617-dd0a661cb183",
+          "firstName": "habiba",
+          "lastName": "farg",
+          "email": "habibafarg696@gmail.com",
+          "phone": null,
+          "gender": "FEMALE",
+          "role": "OWNER",
+          "status": "ACTIVE",
+          "avatarUrl": null,
+          "emailVerifiedAt": "2026-08-09T15:06:40.134Z",
+          "phoneVerifiedAt": null,
+          "lastLoginAt": "2026-08-09T15:06:40.911Z",
+          "createdAt": "2026-08-09T15:06:40.035Z",
+          "updatedAt": "2026-08-09T15:06:41.018Z"
+        },
+        "bio": null,
+        "governorate": "سوهاج",
+        "contactNumber": "01080584977",
+        "identityImages": [
+          {
+            "url": "https://res.cloudinary.com/hxbaiwgt/image/upload/v1786287999/sakenny/1786287999095-383395-blob.jpg",
+            "publicId": "sakenny/1786287999095-383395-blob"
+          },
+          {
+            "url": "https://res.cloudinary.com/hxbaiwgt/image/upload/v1786287999/sakenny/1786287999095-983875-blob.jpg",
+            "publicId": "sakenny/1786287999095-983875-blob"
+          }
+        ],
+        "verificationStatus": "PENDING",
+        "verifiedAt": null,
+        "verifiedBy": null,
+        "rejectionReason": null
+      },
+      {
+        "id": "ba841e00-db5d-4cdb-b9b9-1c35f7542d8d",
+        "createdAt": "2026-08-03T11:28:37.170Z",
+        "updatedAt": "2026-08-03T11:28:37.170Z",
+        "user": {
+          "id": "80f34451-8a86-41dd-9f54-b3061afc7eb2",
+          "firstName": "Mahmoud",
+          "lastName": "Mohamed",
+          "email": "moh368245@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "OWNER",
+          "status": "ACTIVE",
+          "avatarUrl": null,
+          "emailVerifiedAt": "2026-08-03T11:28:36.122Z",
+          "phoneVerifiedAt": null,
+          "lastLoginAt": "2026-08-03T11:29:44.446Z",
+          "createdAt": "2026-08-03T11:28:37.170Z",
+          "updatedAt": "2026-08-03T11:29:45.786Z"
+        },
+        "bio": "Experienced property owner",
+        "governorate": "Cairo",
+        "contactNumber": "+201012345678",
+        "identityImages": [
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785756515/sakenny/1785756512559-584018-2.png",
+            "publicId": "sakenny/1785756512559-584018-2"
+          }
+        ],
+        "verificationStatus": "PENDING",
+        "verifiedAt": null,
+        "verifiedBy": null,
+        "rejectionReason": null
+      },
+      {
+        "id": "b879ec11-cc4f-4ba1-98e5-36b6d4087f35",
+        "createdAt": "2026-08-02T19:06:16.237Z",
+        "updatedAt": "2026-08-02T19:06:16.237Z",
+        "user": {
+          "id": "304c18a1-c600-4a50-a0c5-9cb767e98ebd",
+          "firstName": "saad",
+          "lastName": "ahmed",
+          "email": "has543897@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "OWNER",
+          "status": "ACTIVE",
+          "avatarUrl": null,
+          "emailVerifiedAt": null,
+          "phoneVerifiedAt": null,
+          "lastLoginAt": null,
+          "createdAt": "2026-08-02T19:06:16.237Z",
+          "updatedAt": "2026-08-02T19:06:16.237Z"
+        },
+        "bio": null,
+        "governorate": "Beni-Seuf",
+        "contactNumber": null,
+        "identityImages": [
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785438725/sakenny/1785438722268-172592-localhost_3000_api_docs.png",
+            "publicId": "sakenny/1785438722268-172592-localhost_3000_api_docs"
+          },
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785438733/sakenny/1785438723414-970342-ChatGPTImageJul18202602_11_16PM.png",
+            "publicId": "sakenny/1785438723414-970342-ChatGPTImageJul18202602_11_16PM"
+          }
+        ],
+        "verificationStatus": "PENDING",
+        "verifiedAt": null,
+        "verifiedBy": null,
+        "rejectionReason": null
+      },
+      {
+        "id": "6570b2c5-69cc-4a97-be56-eb2363964ddc",
+        "createdAt": "2026-08-02T19:06:16.237Z",
+        "updatedAt": "2026-08-02T19:06:16.237Z",
+        "user": {
+          "id": "9c06be3d-17d6-452d-95ce-f4d137f1ebc4",
+          "firstName": "Ahmed",
+          "lastName": "Hassan",
+          "email": "abdelrahman.7hmed55@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "OWNER",
+          "status": "ACTIVE",
+          "avatarUrl": null,
+          "emailVerifiedAt": null,
+          "phoneVerifiedAt": null,
+          "lastLoginAt": null,
+          "createdAt": "2026-08-02T19:06:16.237Z",
+          "updatedAt": "2026-08-02T19:06:16.237Z"
+        },
+        "bio": null,
+        "governorate": "Cairo",
+        "contactNumber": null,
+        "identityImages": [
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785441728/sakenny/1785441728692-215121-C.png",
+            "publicId": "sakenny/1785441728692-215121-C"
+          },
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785441728/sakenny/1785441728692-459590-code4.png",
+            "publicId": "sakenny/1785441728692-459590-code4"
+          }
+        ],
+        "verificationStatus": "PENDING",
+        "verifiedAt": null,
+        "verifiedBy": null,
+        "rejectionReason": null
+      },
+      {
+        "id": "ed2a0870-848e-4d9d-8f95-e8a46e57ac63",
+        "createdAt": "2026-08-02T19:06:16.237Z",
+        "updatedAt": "2026-08-02T19:06:16.237Z",
+        "user": {
+          "id": "bf8298fb-676c-4ae7-a0eb-f38dd783f83c",
+          "firstName": "Ahmed",
+          "lastName": "Hassan",
+          "email": "ahmed11ahmed2992002@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "OWNER",
+          "status": "ACTIVE",
+          "avatarUrl": null,
+          "emailVerifiedAt": null,
+          "phoneVerifiedAt": null,
+          "lastLoginAt": "2026-08-09T23:35:06.157Z",
+          "createdAt": "2026-08-02T19:06:16.237Z",
+          "updatedAt": "2026-08-09T23:35:06.264Z"
+        },
+        "bio": null,
+        "governorate": "Cairo",
+        "contactNumber": null,
+        "identityImages": [
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785442238/sakenny/1785442237954-954818-C.png",
+            "publicId": "sakenny/1785442237954-954818-C"
+          },
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785442238/sakenny/1785442237955-659654-code4.png",
+            "publicId": "sakenny/1785442237955-659654-code4"
+          }
+        ],
+        "verificationStatus": "PENDING",
+        "verifiedAt": null,
+        "verifiedBy": null,
+        "rejectionReason": null
+      },
+      {
+        "id": "b5199575-e592-4036-a493-78c9cd6ec1bb",
+        "createdAt": "2026-08-02T19:06:16.237Z",
+        "updatedAt": "2026-08-02T19:06:16.237Z",
+        "user": {
+          "id": "c267364e-20b3-482d-9a01-7abb49da5dfb",
+          "firstName": "Abdo26",
+          "lastName": "Ahmed6",
+          "email": "ha2992001@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "OWNER",
+          "status": "ACTIVE",
+          "avatarUrl": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785374970/sakenny/1785374968523-C%2B%2B.png",
+          "emailVerifiedAt": null,
+          "phoneVerifiedAt": null,
+          "lastLoginAt": "2026-08-07T20:38:07.330Z",
+          "createdAt": "2026-08-02T19:06:16.237Z",
+          "updatedAt": "2026-08-07T20:38:07.437Z"
+        },
+        "bio": "Experienced property owner in Cairo",
+        "governorate": "Cairo",
+        "contactNumber": null,
+        "identityImages": [
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785029975/sakenny/1785029973274-Screenshot%202026-07-08%20104444.png",
+            "publicId": "sakenny/1785029973274-Screenshot 2026-07-08 104444"
+          },
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785029976/sakenny/1785029974587-Screenshot%202026-07-08%20105637.png",
+            "publicId": "sakenny/1785029974587-Screenshot 2026-07-08 105637"
+          },
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785070192/sakenny/1785070191226-real-madrid.png",
+            "publicId": "sakenny/1785070191226-real-madrid"
+          },
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785070610/sakenny/1785070605932-realdark.jpg",
+            "publicId": "sakenny/1785070605932-realdark"
+          }
+        ],
+        "verificationStatus": "APPROVED",
+        "verifiedAt": null,
+        "verifiedBy": {
+          "id": "a5036fa3-9113-4d6a-8e8f-ee24bf943e65",
+          "firstName": "Abdo",
+          "lastName": "Admin",
+          "email": "admin@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "ADMIN",
+          "status": "ACTIVE",
+          "avatarUrl": null,
+          "emailVerifiedAt": null,
+          "phoneVerifiedAt": null,
+          "lastLoginAt": "2026-08-09T23:26:40.220Z",
+          "createdAt": "2026-08-02T19:06:16.237Z",
+          "updatedAt": "2026-08-09T23:26:40.330Z"
+        },
+        "rejectionReason": null
+      },
+      {
+        "id": "987c6b3f-c396-45f4-a450-1da8156fd1d0",
+        "createdAt": "2026-08-02T19:06:16.237Z",
+        "updatedAt": "2026-08-02T19:06:16.237Z",
+        "user": {
+          "id": "bab27753-a811-44e4-b868-4c052ce9106a",
+          "firstName": "Ahmed",
+          "lastName": "Mansour",
+          "email": "seshaacademyeg@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "OWNER",
+          "status": "ACTIVE",
+          "avatarUrl": null,
+          "emailVerifiedAt": null,
+          "phoneVerifiedAt": null,
+          "lastLoginAt": null,
+          "createdAt": "2026-08-02T19:06:16.237Z",
+          "updatedAt": "2026-08-02T19:06:16.237Z"
+        },
+        "bio": null,
+        "governorate": "الجيزة",
+        "contactNumber": null,
+        "identityImages": [
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785453087/sakenny/1785453087695-490391-blob.jpg",
+            "publicId": "sakenny/1785453087695-490391-blob"
+          },
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785453087/sakenny/1785453087696-412204-blob.jpg",
+            "publicId": "sakenny/1785453087696-412204-blob"
+          }
+        ],
+        "verificationStatus": "PENDING",
+        "verifiedAt": null,
+        "verifiedBy": null,
+        "rejectionReason": null
+      },
+      {
+        "id": "d7492282-4358-457b-8d16-5c2b09dfd39b",
+        "createdAt": "2026-08-02T19:06:16.237Z",
+        "updatedAt": "2026-08-06T01:05:46.099Z",
+        "user": {
+          "id": "10031bd9-a77d-403f-bc55-ec7b6b2ae350",
+          "firstName": "Ahmed",
+          "lastName": "Mansour owner",
+          "email": "sakenny845@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "OWNER",
+          "status": "ACTIVE",
+          "avatarUrl": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785977348/sakenny/1785977348144-917730-Picsart_25-08-20_12-43-41-838.jpg",
+          "emailVerifiedAt": null,
+          "phoneVerifiedAt": null,
+          "lastLoginAt": "2026-08-07T15:46:30.625Z",
+          "createdAt": "2026-08-02T19:06:16.237Z",
+          "updatedAt": "2026-08-07T15:46:30.730Z"
+        },
+        "bio": null,
+        "governorate": "الجيزة",
+        "contactNumber": "01551973444",
+        "identityImages": [
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785453217/sakenny/1785453217408-163087-blob.jpg",
+            "publicId": "sakenny/1785453217408-163087-blob"
+          },
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785453217/sakenny/1785453217408-213219-blob.jpg",
+            "publicId": "sakenny/1785453217408-213219-blob"
+          }
+        ],
+        "verificationStatus": "PENDING",
+        "verifiedAt": null,
+        "verifiedBy": null,
+        "rejectionReason": null
+      },
+      {
+        "id": "2d70418c-5c40-432c-aae7-873c228401ab",
+        "createdAt": "2026-08-02T19:06:16.237Z",
+        "updatedAt": "2026-08-02T19:06:16.237Z",
+        "user": {
+          "id": "5685ff05-6a15-4283-aa3c-dc09af0cbd77",
+          "firstName": "Ahmed",
+          "lastName": "Hassan",
+          "email": "sesha.company@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "OWNER",
+          "status": "ACTIVE",
+          "avatarUrl": null,
+          "emailVerifiedAt": null,
+          "phoneVerifiedAt": null,
+          "lastLoginAt": null,
+          "createdAt": "2026-08-02T19:06:16.237Z",
+          "updatedAt": "2026-08-09T23:31:46.681Z"
+        },
+        "bio": "Experienced property owner",
+        "governorate": "Cairo",
+        "contactNumber": null,
+        "identityImages": [
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785443105/sakenny/1785443105324-402059-sdafsadf.jpg",
+            "publicId": "sakenny/1785443105324-402059-sdafsadf"
+          },
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785443105/sakenny/1785443105324-192385-WhatsAppImage2026-07-30at11.jpg",
+            "publicId": "sakenny/1785443105324-192385-WhatsAppImage2026-07-30at11"
+          }
+        ],
+        "verificationStatus": "PENDING",
+        "verifiedAt": null,
+        "verifiedBy": null,
+        "rejectionReason": null
+      },
+      {
+        "id": "f4832576-0303-40d7-88a4-3fff4d7e13d4",
+        "createdAt": "2026-08-02T19:06:16.237Z",
+        "updatedAt": "2026-08-02T19:06:16.237Z",
+        "user": {
+          "id": "ec5ffffa-6bb5-42c5-b145-dd849a642556",
+          "firstName": "Zain",
+          "lastName": "Mohamed",
+          "email": "zain1011200@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "OWNER",
+          "status": "ACTIVE",
+          "avatarUrl": null,
+          "emailVerifiedAt": null,
+          "phoneVerifiedAt": null,
+          "lastLoginAt": "2026-08-07T19:57:46.359Z",
+          "createdAt": "2026-08-02T19:06:16.237Z",
+          "updatedAt": "2026-08-07T19:57:46.470Z"
+        },
+        "bio": "Experienced property owner",
+        "governorate": "Cairo",
+        "contactNumber": null,
+        "identityImages": [
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785423448/sakenny/1785423446404-463229-9781484206485.png",
+            "publicId": "sakenny/1785423446404-463229-9781484206485"
+          },
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785423448/sakenny/1785423446404-744225-9781617291609.png",
+            "publicId": "sakenny/1785423446404-744225-9781617291609"
+          }
+        ],
+        "verificationStatus": "PENDING",
+        "verifiedAt": null,
+        "verifiedBy": null,
+        "rejectionReason": null
+      }
+    ],
+    "meta": {
+      "page": 1,
+      "limit": 10,
+      "totalItems": 11,
+      "totalPages": 2,
+      "hasNextPage": true,
+      "hasPreviousPage": false
+    }
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "success": true,
+  "message": "تمت العملية بنجاح",
+  "data": {
+    "items": [
+      {
+        "id": "e6048a90-45e3-449d-af9a-dd97797490a3",
+        "type": "REVIEW",
+        "title": "تقييم جديد للمنصة",
+        "message": "قام Abdo26 Ahmed6 بإضافة تقييم 5 نجوم للمنصة:\nجيد جدا",
+        "isRead": false,
+        "readAt": null,
+        "createdAt": "2026-08-07T19:47:03.732Z"
+      },
+      {
+        "id": "d31f7597-bfbf-4c8b-8800-01d5a0e1f1d0",
+        "type": "PAYMENT",
+        "title": "إيصال دفع جديد لطلب اشتراك",
+        "message": "قام المالك Abdo26 Ahmed6 بإرسال إيصال دفع بمبلغ 3999 ج.م لباقة \"الباقة الاحترافية\".",
+        "isRead": false,
+        "readAt": null,
+        "createdAt": "2026-08-07T18:53:02.761Z"
+      },
+      {
+        "id": "1963c94c-8206-4772-bf5d-5251eb1ee06d",
+        "type": "SUPPORT",
+        "title": "تذكرة دعم جديدة",
+        "message": "تذكرة جديدة #TKT-20260806-1203 من Ahmed Hassan: Cannot reset my password",
+        "isRead": false,
+        "readAt": null,
+        "createdAt": "2026-08-06T21:33:26.973Z"
+      },
+      {
+        "id": "b3e4d251-4f3a-490c-9420-a00c05be9ca4",
+        "type": "SUPPORT",
+        "title": "New Support Ticket Created",
+        "message": "Ticket #TKT-20260806-5505 submitted by Ahmed Hassan: Cannot reset my password",
+        "isRead": false,
+        "readAt": null,
+        "createdAt": "2026-08-06T21:32:46.998Z"
+      },
+      {
+        "id": "33f139a2-ce23-46fe-a2ef-fedad2e83cdb",
+        "type": "SUPPORT",
+        "title": "New Support Ticket Created",
+        "message": "Ticket #TKT-20260806-4862 submitted by Ahmed Hassan: Cannot reset my password",
+        "isRead": false,
+        "readAt": null,
+        "createdAt": "2026-08-06T21:29:12.305Z"
+      },
+      {
+        "id": "bb170ab8-01d3-4088-a3dd-33a7f3b366ed",
+        "type": "SUPPORT",
+        "title": "تذكرة دعم جديدة",
+        "message": "تذكرة جديدة #TKT-20260806-6377 من Ahmed Hassan: Cannot reset my password",
+        "isRead": false,
+        "readAt": null,
+        "createdAt": "2026-08-06T21:27:55.917Z"
+      },
+      {
+        "id": "407e7bb1-078d-486d-988b-f1727464d1e0",
+        "type": "REVIEW",
+        "title": "تقييم جديد للمنصة",
+        "message": "قام Ahmed Mansour بإضافة تقييم 5 نجوم للمنصة:\nانا الي عامل الموقع دا ف طبيعي اقول انه جامد لاني جامد",
+        "isRead": false,
+        "readAt": null,
+        "createdAt": "2026-08-06T00:12:37.286Z"
+      },
+      {
+        "id": "4a845ff7-1a72-4776-b875-ab9a6cccabba",
+        "type": "REPORT",
+        "title": "بلاغ جديد عن مالك",
+        "message": "قام المستخدم Ahmed Hassan بالإبلاغ عن المالك Abdo26 Ahmed6. السبب: NO_OWNERSHIP_PROOF",
+        "isRead": false,
+        "readAt": null,
+        "createdAt": "2026-08-05T13:17:52.927Z"
+      },
+      {
+        "id": "29ef28bd-30da-4ab6-bf5f-90db4492d338",
+        "type": "REPORT",
+        "title": "بلاغ جديد عن مالك",
+        "message": "قام المستخدم Ahmed Mansour بالإبلاغ عن المالك Abdo26 Ahmed6. السبب: ILLEGAL_RENTAL",
+        "isRead": false,
+        "readAt": null,
+        "createdAt": "2026-08-04T18:47:25.850Z"
+      },
+      {
+        "id": "63ab0e4a-b601-40e4-b884-335d62aeb39c",
+        "type": "PAYMENT",
+        "title": "إيصال دفع جديد لطلب اشتراك",
+        "message": "قام المالك Abdo26 Ahmed6 بإرسال إيصال دفع بمبلغ 100 ج.م لباقة \"Basic Plan\".",
+        "isRead": false,
+        "readAt": null,
+        "createdAt": "2026-08-04T12:30:43.368Z"
+      }
+    ],
+    "unreadCount": 11,
+    "meta": {
+      "page": 1,
+      "limit": 10,
+      "totalItems": 11,
+      "totalPages": 2,
+      "hasNextPage": true,
+      "hasPreviousPage": false
+    }
+  }
+}

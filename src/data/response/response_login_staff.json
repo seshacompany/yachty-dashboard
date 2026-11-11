@@ -1,0 +1,26 @@
+{
+  "success": true,
+  "message": "تمت العملية بنجاح",
+  "data": {
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyNzdjZWUxZC04ZDcyLTQxNGYtOGUwMC01YjllYzU4MmRkYjUiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODgwOTIzMDQsImV4cCI6MTc4ODA5MzIwNH0.JEmyO46MWiiall9u3vGK9kxiA7ZAvzfn9jC6oGC7WU0",
+    "refreshToken": "978afeff-fe90-4501-89a4-2db3e7c9b495.1f7f41f5e5271f0055de7cf624f90f55ab26b20b67f11380cde412c0f23bf994",
+    "user": {
+      "id": "277cee1d-8d72-414f-8e00-5b9ec582ddb5",
+      "firstName": "ahmed",
+      "lastName": "mansour",
+      "email": "ahmed11ahmed2992002@gmail.com",
+      "phone": "01019472864",
+      "gender": "MALE",
+      "role": "ADMIN",
+      "status": "ACTIVE",
+      "adminType": "STAFF",
+      "avatarUrl": null,
+      "emailVerifiedAt": "2026-08-30T12:17:42.480Z",
+      "phoneVerifiedAt": "2026-08-30T12:17:42.480Z",
+      "lastLoginAt": "2026-08-30T12:18:24.533Z",
+      "createdAt": "2026-08-30T12:17:42.427Z",
+      "updatedAt": "2026-08-30T12:18:24.535Z",
+      "deletedAt": null
+    }
+  }
+}

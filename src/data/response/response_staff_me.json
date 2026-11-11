@@ -1,0 +1,31 @@
+{
+  "success": true,
+  "message": "تمت العملية بنجاح",
+  "data": {
+    "id": "277cee1d-8d72-414f-8e00-5b9ec582ddb5",
+    "firstName": "ahmed",
+    "lastName": "mansour",
+    "email": "ahmed11ahmed2992002@gmail.com",
+    "phone": "01019472864",
+    "gender": "MALE",
+    "status": "ACTIVE",
+    "adminType": "STAFF",
+    "jobTitle": "Software developer",
+    "permissions": [
+      "USERS",
+      "OWNERS",
+      "PLANS",
+      "SUBSCRIPTIONS",
+      "PAYMENTS",
+      "PROPERTIES",
+      "REVIEWS",
+      "OWNER_REPORTS",
+      "SUPPORT_TICKETS",
+      "FAQS",
+      "TERMS_AND_CONDITIONS",
+      "STAFF"
+    ],
+    "createdAt": "2026-08-30T12:17:42.427Z",
+    "updatedAt": "2026-08-30T12:18:24.535Z"
+  }
+}

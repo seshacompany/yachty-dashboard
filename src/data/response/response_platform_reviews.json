@@ -1,0 +1,151 @@
+{
+  "success": true,
+  "message": "تمت العملية بنجاح",
+  "data": {
+    "items": [
+      {
+        "id": "62a62d84-240e-4b3c-8c0a-6bc202829d8d",
+        "rating": 5,
+        "comment": "10/10✨",
+        "status": "PENDING",
+        "reviewer": {
+          "id": "0fffd66d-ec10-4e42-896e-cf6c6691daac",
+          "firstName": "rania",
+          "lastName": "farg",
+          "email": "rf1506942@gmail.com",
+          "phone": null,
+          "gender": "FEMALE",
+          "role": "SEEKER",
+          "status": "ACTIVE",
+          "adminType": null,
+          "avatarUrl": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785712933/sakenny/1785712933301-979638-profile.jpg",
+          "emailVerifiedAt": "2026-08-02T23:20:21.403Z",
+          "phoneVerifiedAt": null,
+          "lastLoginAt": "2026-08-22T20:35:04.916Z",
+          "createdAt": "2026-08-02T23:20:21.306Z",
+          "updatedAt": "2026-08-22T20:35:05.025Z",
+          "deletedAt": null
+        },
+        "createdAt": "2026-08-22T20:35:24.512Z",
+        "updatedAt": "2026-08-22T20:35:24.512Z",
+        "isFeatured": false
+      },
+      {
+        "id": "14d9a3fc-a22f-4269-b660-617b412f72cc",
+        "rating": 5,
+        "comment": "جيد جدا",
+        "status": "PENDING",
+        "reviewer": {
+          "id": "c267364e-20b3-482d-9a01-7abb49da5dfb",
+          "firstName": "Abdo26",
+          "lastName": "Ahmed6",
+          "email": "ha2992001@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "OWNER",
+          "status": "ACTIVE",
+          "adminType": null,
+          "avatarUrl": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785374970/sakenny/1785374968523-C%2B%2B.png",
+          "emailVerifiedAt": null,
+          "phoneVerifiedAt": null,
+          "lastLoginAt": "2026-08-28T02:35:54.942Z",
+          "createdAt": "2026-08-02T19:06:16.237Z",
+          "updatedAt": "2026-08-28T02:35:55.183Z",
+          "deletedAt": null
+        },
+        "createdAt": "2026-08-07T19:46:04.061Z",
+        "updatedAt": "2026-08-07T19:46:04.061Z",
+        "isFeatured": false
+      },
+      {
+        "id": "3a99e496-14e4-4ecf-9a0f-97fd28359fce",
+        "rating": 5,
+        "comment": "انا الي عامل الموقع دا ف طبيعي اقول انه جامد لاني جامد",
+        "status": "PENDING",
+        "reviewer": {
+          "id": "8fc2d8b1-69d7-449f-ab8a-22c0d34f9de0",
+          "firstName": "Ahmed",
+          "lastName": "Mansour new",
+          "email": "fa8073033@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "SEEKER",
+          "status": "ACTIVE",
+          "adminType": null,
+          "avatarUrl": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785889043/sakenny/1785889043281-247426-profile.jpg",
+          "emailVerifiedAt": null,
+          "phoneVerifiedAt": null,
+          "lastLoginAt": "2026-08-27T17:33:47.726Z",
+          "createdAt": "2026-08-02T19:06:16.237Z",
+          "updatedAt": "2026-08-27T17:33:47.833Z",
+          "deletedAt": null
+        },
+        "createdAt": "2026-08-06T00:09:44.413Z",
+        "updatedAt": "2026-08-06T00:09:44.413Z",
+        "isFeatured": false
+      },
+      {
+        "id": "83d72663-aff2-4393-a1ee-7fdcdfda6e30",
+        "rating": 4,
+        "comment": "The platform helps me to find good place.",
+        "status": "PUBLISHED",
+        "reviewer": {
+          "id": "a4e53324-b75b-48da-819a-ec9ef90d94e4",
+          "firstName": "Ahmed",
+          "lastName": "Hassan",
+          "email": "ba2662003@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "SEEKER",
+          "status": "ACTIVE",
+          "adminType": null,
+          "avatarUrl": null,
+          "emailVerifiedAt": null,
+          "phoneVerifiedAt": null,
+          "lastLoginAt": "2026-08-28T01:12:49.961Z",
+          "createdAt": "2026-08-02T19:06:16.237Z",
+          "updatedAt": "2026-08-28T01:12:50.068Z",
+          "deletedAt": null
+        },
+        "createdAt": "2026-08-02T19:06:16.237Z",
+        "updatedAt": "2026-08-02T19:06:16.237Z",
+        "isFeatured": true
+      },
+      {
+        "id": "77163c56-b543-45ef-96e3-c51ad8a1b548",
+        "rating": 5,
+        "comment": "موقع جامد الصراحه والي عمله اجمد",
+        "status": "PUBLISHED",
+        "reviewer": {
+          "id": "10031bd9-a77d-403f-bc55-ec7b6b2ae350",
+          "firstName": "Ahmed",
+          "lastName": "Mansour owner",
+          "email": "sakenny845@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "OWNER",
+          "status": "ACTIVE",
+          "adminType": "ADMIN",
+          "avatarUrl": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785977348/sakenny/1785977348144-917730-Picsart_25-08-20_12-43-41-838.jpg",
+          "emailVerifiedAt": null,
+          "phoneVerifiedAt": null,
+          "lastLoginAt": "2026-08-16T23:06:45.454Z",
+          "createdAt": "2026-08-02T19:06:16.237Z",
+          "updatedAt": "2026-08-16T23:06:45.559Z",
+          "deletedAt": null
+        },
+        "createdAt": "2026-08-02T19:06:16.237Z",
+        "updatedAt": "2026-08-02T19:06:16.237Z",
+        "isFeatured": false
+      }
+    ],
+    "meta": {
+      "page": 1,
+      "limit": 10,
+      "totalItems": 5,
+      "totalPages": 1,
+      "hasNextPage": false,
+      "hasPreviousPage": false
+    }
+  }
+}

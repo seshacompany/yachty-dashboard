@@ -1,0 +1,483 @@
+{
+  "success": true,
+  "message": "تمت العملية بنجاح",
+  "data": {
+    "items": [
+      {
+        "id": "74bad274-b38f-44e3-b7ac-4ad4f5509e46",
+        "createdAt": "2026-08-06T18:21:16.580Z",
+        "updatedAt": "2026-08-09T21:21:10.732Z",
+        "owner": {
+          "id": "c267364e-20b3-482d-9a01-7abb49da5dfb",
+          "firstName": "Abdo26",
+          "lastName": "Ahmed6",
+          "email": "ha2992001@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "OWNER",
+          "status": "ACTIVE",
+          "avatarUrl": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785374970/sakenny/1785374968523-C%2B%2B.png",
+          "emailVerifiedAt": null,
+          "phoneVerifiedAt": null,
+          "lastLoginAt": "2026-08-07T20:38:07.330Z",
+          "createdAt": "2026-08-02T19:06:16.237Z",
+          "updatedAt": "2026-08-07T20:38:07.437Z"
+        },
+        "title": "Modern 2-Bedroom Apartment in Zamalek",
+        "description": "Spacious apartment fully furnished with Nile view.",
+        "propertyType": "APARTMENT",
+        "rentalType": "FULL_UNIT",
+        "targetAudience": "STUDENTS",
+        "targetGender": "BOTH",
+        "governorate": "Cairo",
+        "city": "Zamalek",
+        "streetAddress": "15 26th of July Street",
+        "latitude": "30.0626000",
+        "longitude": "31.2197000",
+        "monthlyPrice": "15000.00",
+        "depositAmount": "15000.00",
+        "roomsCount": 2,
+        "bedsCount": 2,
+        "bathroomsCount": 1,
+        "floorNumber": "3",
+        "isFurnished": true,
+        "amenities": [
+          "Air Conditioner",
+          "Washing Machine",
+          "TV",
+          "Wi-Fi",
+          "Stove"
+        ],
+        "propertyImages": [
+          {
+            "url": "https://res.cloudinary.com/hxbaiwgt/image/upload/v1786040475/sakenny/1786040476106-533443-background.jpg",
+            "isCover": true,
+            "publicId": "sakenny/1786040476106-533443-background",
+            "sortOrder": 1
+          },
+          {
+            "url": "https://res.cloudinary.com/hxbaiwgt/image/upload/v1786040475/sakenny/1786040476106-654154-background2.jpg",
+            "isCover": false,
+            "publicId": "sakenny/1786040476106-654154-background2",
+            "sortOrder": 2
+          }
+        ],
+        "status": "PENDING_REVIEW"
+      },
+      {
+        "id": "deeb3ad9-3d67-48bd-85a1-46370a963cf9",
+        "createdAt": "2026-08-06T01:24:43.423Z",
+        "updatedAt": "2026-08-09T21:21:52.195Z",
+        "owner": {
+          "id": "10031bd9-a77d-403f-bc55-ec7b6b2ae350",
+          "firstName": "Ahmed",
+          "lastName": "Mansour owner",
+          "email": "sakenny845@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "OWNER",
+          "status": "ACTIVE",
+          "avatarUrl": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785977348/sakenny/1785977348144-917730-Picsart_25-08-20_12-43-41-838.jpg",
+          "emailVerifiedAt": null,
+          "phoneVerifiedAt": null,
+          "lastLoginAt": "2026-08-07T15:46:30.625Z",
+          "createdAt": "2026-08-02T19:06:16.237Z",
+          "updatedAt": "2026-08-07T15:46:30.730Z"
+        },
+        "title": "شقه الطيارين",
+        "description": "وصف بسيط جدا جدا",
+        "propertyType": "APARTMENT",
+        "rentalType": "BED_ONLY",
+        "targetAudience": "BOTH",
+        "targetGender": "MALE",
+        "governorate": "cairo",
+        "city": "بولاق",
+        "streetAddress": "دكرور",
+        "latitude": "30.0359597",
+        "longitude": "31.2760162",
+        "monthlyPrice": "200.00",
+        "depositAmount": "500.00",
+        "roomsCount": 2,
+        "bedsCount": 2,
+        "bathroomsCount": 3,
+        "floorNumber": null,
+        "isFurnished": true,
+        "amenities": [
+          "Supermarket Nearby",
+          "Stove",
+          "Bills Included",
+          "Guard"
+        ],
+        "propertyImages": [
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785979482/sakenny/1785979482796-840788-code.png",
+            "isCover": true,
+            "publicId": "sakenny/1785979482796-840788-code",
+            "sortOrder": 1
+          }
+        ],
+        "status": "PAUSED"
+      },
+      {
+        "id": "ef8a5f9c-6198-4148-8c81-97da350044d4",
+        "createdAt": "2026-08-05T13:11:18.322Z",
+        "updatedAt": "2026-08-05T13:13:47.944Z",
+        "owner": {
+          "id": "c267364e-20b3-482d-9a01-7abb49da5dfb",
+          "firstName": "Abdo26",
+          "lastName": "Ahmed6",
+          "email": "ha2992001@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "OWNER",
+          "status": "ACTIVE",
+          "avatarUrl": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785374970/sakenny/1785374968523-C%2B%2B.png",
+          "emailVerifiedAt": null,
+          "phoneVerifiedAt": null,
+          "lastLoginAt": "2026-08-07T20:38:07.330Z",
+          "createdAt": "2026-08-02T19:06:16.237Z",
+          "updatedAt": "2026-08-07T20:38:07.437Z"
+        },
+        "title": "Modern 2-Bedroom Apartment in Zamalek",
+        "description": "Spacious apartment fully furnished with Nile view.",
+        "propertyType": "STUDIO",
+        "rentalType": "FULL_UNIT",
+        "targetAudience": "BOTH",
+        "targetGender": "MALE",
+        "governorate": "Cairo",
+        "city": "Zamalek",
+        "streetAddress": "15 26th of July Street",
+        "latitude": "30.0626000",
+        "longitude": "31.2197000",
+        "monthlyPrice": "15000.00",
+        "depositAmount": "15000.00",
+        "roomsCount": 2,
+        "bedsCount": 2,
+        "bathroomsCount": 1,
+        "floorNumber": null,
+        "isFurnished": true,
+        "amenities": [
+          "Wi-Fi",
+          "Air Conditioner"
+        ],
+        "propertyImages": [
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785935477/sakenny/1785935476801-521908-6db5f1ff6221fbaff601ace85c38a6d3.jpg",
+            "isCover": true,
+            "publicId": "sakenny/1785935476801-521908-6db5f1ff6221fbaff601ace85c38a6d3",
+            "sortOrder": 1
+          }
+        ],
+        "status": "DRAFT"
+      },
+      {
+        "id": "ac0f735b-0586-4e3c-b1fc-fd9ab1b0567a",
+        "createdAt": "2026-08-05T00:25:14.735Z",
+        "updatedAt": "2026-08-06T01:25:59.762Z",
+        "owner": {
+          "id": "10031bd9-a77d-403f-bc55-ec7b6b2ae350",
+          "firstName": "Ahmed",
+          "lastName": "Mansour owner",
+          "email": "sakenny845@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "OWNER",
+          "status": "ACTIVE",
+          "avatarUrl": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785977348/sakenny/1785977348144-917730-Picsart_25-08-20_12-43-41-838.jpg",
+          "emailVerifiedAt": null,
+          "phoneVerifiedAt": null,
+          "lastLoginAt": "2026-08-07T15:46:30.625Z",
+          "createdAt": "2026-08-02T19:06:16.237Z",
+          "updatedAt": "2026-08-07T15:46:30.730Z"
+        },
+        "title": "شقه الاحلام",
+        "description": "تيست تيست تيست",
+        "propertyType": "APARTMENT",
+        "rentalType": "FULL_UNIT",
+        "targetAudience": "BOTH",
+        "targetGender": "BOTH",
+        "governorate": "alexandria",
+        "city": "شسشس",
+        "streetAddress": "شسشس",
+        "latitude": "30.0274886",
+        "longitude": "31.2391090",
+        "monthlyPrice": "500.00",
+        "depositAmount": "1000.00",
+        "roomsCount": 4,
+        "bedsCount": 4,
+        "bathroomsCount": 3,
+        "floorNumber": null,
+        "isFurnished": true,
+        "amenities": [
+          "Air Conditioner",
+          "Washing Machine",
+          "TV",
+          "Bills Included",
+          "Intercom",
+          "Cameras",
+          "Supermarket Nearby",
+          "Near the Metro"
+        ],
+        "propertyImages": [
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785889514/sakenny/1785889514015-674680-sdafsadf.jpg",
+            "isCover": true,
+            "publicId": "sakenny/1785889514015-674680-sdafsadf",
+            "sortOrder": 1
+          },
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785900846/sakenny/1785900846243-358018-WhatsAppImage2026-07-30at11.jpg",
+            "isCover": false,
+            "publicId": "sakenny/1785900846243-358018-WhatsAppImage2026-07-30at11",
+            "sortOrder": 2
+          }
+        ],
+        "status": "PUBLISHED"
+      },
+      {
+        "id": "677dae38-be02-443e-9a3d-f266f394d32f",
+        "createdAt": "2026-08-02T19:06:16.237Z",
+        "updatedAt": "2026-08-07T19:02:26.986Z",
+        "owner": {
+          "id": "c267364e-20b3-482d-9a01-7abb49da5dfb",
+          "firstName": "Abdo26",
+          "lastName": "Ahmed6",
+          "email": "ha2992001@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "OWNER",
+          "status": "ACTIVE",
+          "avatarUrl": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785374970/sakenny/1785374968523-C%2B%2B.png",
+          "emailVerifiedAt": null,
+          "phoneVerifiedAt": null,
+          "lastLoginAt": "2026-08-07T20:38:07.330Z",
+          "createdAt": "2026-08-02T19:06:16.237Z",
+          "updatedAt": "2026-08-07T20:38:07.437Z"
+        },
+        "title": "Modern 2-Bedroom Apartment in Zamalek",
+        "description": "Spacious apartment fully furnished with Nile view.",
+        "propertyType": "APARTMENT",
+        "rentalType": "FULL_UNIT",
+        "targetAudience": "STUDENTS",
+        "targetGender": "BOTH",
+        "governorate": "Cairo",
+        "city": "Zamalek",
+        "streetAddress": "15 26th of July Street",
+        "latitude": "30.0626000",
+        "longitude": "31.2197000",
+        "monthlyPrice": "15000.00",
+        "depositAmount": "15000.00",
+        "roomsCount": 2,
+        "bedsCount": 2,
+        "bathroomsCount": 1,
+        "floorNumber": null,
+        "isFurnished": true,
+        "amenities": [
+          "Wi-Fi",
+          "Air Conditioner"
+        ],
+        "propertyImages": [
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785684105/sakenny/1785684103773-352047-9781484206485.png",
+            "isCover": true,
+            "publicId": "sakenny/1785684103773-352047-9781484206485",
+            "sortOrder": 1
+          }
+        ],
+        "status": "PUBLISHED"
+      },
+      {
+        "id": "5ccd41a5-126d-4b7b-ac48-c998271f00da",
+        "createdAt": "2026-08-02T19:06:16.237Z",
+        "updatedAt": "2026-08-02T19:06:16.237Z",
+        "owner": {
+          "id": "10031bd9-a77d-403f-bc55-ec7b6b2ae350",
+          "firstName": "Ahmed",
+          "lastName": "Mansour owner",
+          "email": "sakenny845@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "OWNER",
+          "status": "ACTIVE",
+          "avatarUrl": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785977348/sakenny/1785977348144-917730-Picsart_25-08-20_12-43-41-838.jpg",
+          "emailVerifiedAt": null,
+          "phoneVerifiedAt": null,
+          "lastLoginAt": "2026-08-07T15:46:30.625Z",
+          "createdAt": "2026-08-02T19:06:16.237Z",
+          "updatedAt": "2026-08-07T15:46:30.730Z"
+        },
+        "title": "Modern 2-Bedroom Apartment in Zamalek",
+        "description": "Spacious apartment fully furnished with Nile view.",
+        "propertyType": "APARTMENT",
+        "rentalType": "FULL_UNIT",
+        "targetAudience": "STUDENTS",
+        "targetGender": "BOTH",
+        "governorate": "Cairo",
+        "city": "Zamalek",
+        "streetAddress": "15 26th of July Street",
+        "latitude": "30.0626000",
+        "longitude": "31.2197000",
+        "monthlyPrice": "15000.00",
+        "depositAmount": "15000.00",
+        "roomsCount": 2,
+        "bedsCount": 2,
+        "bathroomsCount": 1,
+        "floorNumber": null,
+        "isFurnished": true,
+        "amenities": [
+          "Washing Machine"
+        ],
+        "propertyImages": [
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785684253/sakenny/1785684253192-176119-sdafsadf.jpg",
+            "isCover": true,
+            "publicId": "sakenny/1785684253192-176119-sdafsadf",
+            "sortOrder": 1
+          }
+        ],
+        "status": "PUBLISHED"
+      },
+      {
+        "id": "ba0640d3-4e94-4f07-a809-d063a6aa0ef8",
+        "createdAt": "2026-08-02T19:06:16.237Z",
+        "updatedAt": "2026-08-07T19:03:18.301Z",
+        "owner": {
+          "id": "c267364e-20b3-482d-9a01-7abb49da5dfb",
+          "firstName": "Abdo26",
+          "lastName": "Ahmed6",
+          "email": "ha2992001@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "OWNER",
+          "status": "ACTIVE",
+          "avatarUrl": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785374970/sakenny/1785374968523-C%2B%2B.png",
+          "emailVerifiedAt": null,
+          "phoneVerifiedAt": null,
+          "lastLoginAt": "2026-08-07T20:38:07.330Z",
+          "createdAt": "2026-08-02T19:06:16.237Z",
+          "updatedAt": "2026-08-07T20:38:07.437Z"
+        },
+        "title": "Modern 2-Bedroom Apartment in Nasr City",
+        "description": "Spacious apartment fully furnished with Nile view.",
+        "propertyType": "APARTMENT",
+        "rentalType": "FULL_UNIT",
+        "targetAudience": "STUDENTS",
+        "targetGender": "MALE",
+        "governorate": "Cairo",
+        "city": "Nasr City",
+        "streetAddress": "15 26th of July Street",
+        "latitude": "30.0626000",
+        "longitude": "31.2197000",
+        "monthlyPrice": "5000.00",
+        "depositAmount": "5000.00",
+        "roomsCount": 3,
+        "bedsCount": 0,
+        "bathroomsCount": 1,
+        "floorNumber": null,
+        "isFurnished": false,
+        "amenities": [
+          "Wi-Fi"
+        ],
+        "propertyImages": [
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785382096/sakenny/1785382094800-AEng.png",
+            "isCover": true,
+            "publicId": "sakenny/1785382094800-AEng",
+            "sortOrder": 1
+          },
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785382096/sakenny/1785382094801-Aenglish.png",
+            "isCover": false,
+            "publicId": "sakenny/1785382094801-Aenglish",
+            "sortOrder": 2
+          }
+        ],
+        "status": "PUBLISHED"
+      },
+      {
+        "id": "aed3b566-c786-45b6-b228-bb4426ee9b8a",
+        "createdAt": "2026-08-02T19:06:16.237Z",
+        "updatedAt": "2026-08-07T19:02:56.691Z",
+        "owner": {
+          "id": "c267364e-20b3-482d-9a01-7abb49da5dfb",
+          "firstName": "Abdo26",
+          "lastName": "Ahmed6",
+          "email": "ha2992001@gmail.com",
+          "phone": null,
+          "gender": "MALE",
+          "role": "OWNER",
+          "status": "ACTIVE",
+          "avatarUrl": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785374970/sakenny/1785374968523-C%2B%2B.png",
+          "emailVerifiedAt": null,
+          "phoneVerifiedAt": null,
+          "lastLoginAt": "2026-08-07T20:38:07.330Z",
+          "createdAt": "2026-08-02T19:06:16.237Z",
+          "updatedAt": "2026-08-07T20:38:07.437Z"
+        },
+        "title": "Modern 2-Bedroom Apartment in Zamalek",
+        "description": "Spacious apartment fully furnished with Nile view.",
+        "propertyType": "APARTMENT",
+        "rentalType": "FULL_UNIT",
+        "targetAudience": "STUDENTS",
+        "targetGender": "BOTH",
+        "governorate": "Cairo",
+        "city": "Zamalek",
+        "streetAddress": "15 26th of July Street",
+        "latitude": "30.0626000",
+        "longitude": "31.2197000",
+        "monthlyPrice": "15000.00",
+        "depositAmount": "15000.00",
+        "roomsCount": 2,
+        "bedsCount": 2,
+        "bathroomsCount": 1,
+        "floorNumber": null,
+        "isFurnished": true,
+        "amenities": [
+          "Wi-Fi",
+          "Air Conditioner"
+        ],
+        "propertyImages": [
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785375445/sakenny/1785375443356-code.png",
+            "isCover": true,
+            "publicId": "sakenny/1785375443356-code",
+            "sortOrder": 1
+          },
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785375445/sakenny/1785375443362-code2.png",
+            "isCover": false,
+            "publicId": "sakenny/1785375443362-code2",
+            "sortOrder": 2
+          },
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785375445/sakenny/1785375443769-code3.png",
+            "isCover": false,
+            "publicId": "sakenny/1785375443769-code3",
+            "sortOrder": 3
+          },
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785375445/sakenny/1785375443772-code4.png",
+            "isCover": false,
+            "publicId": "sakenny/1785375443772-code4",
+            "sortOrder": 4
+          },
+          {
+            "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1785376926/sakenny/1785376924482-9781617291609.png",
+            "isCover": false,
+            "publicId": "sakenny/1785376924482-9781617291609",
+            "sortOrder": 5
+          }
+        ],
+        "status": "PUBLISHED"
+      }
+    ],
+    "meta": {
+      "page": 1,
+      "limit": 10,
+      "totalItems": 8,
+      "totalPages": 1,
+      "hasNextPage": false,
+      "hasPreviousPage": false
+    }
+  }
+}
