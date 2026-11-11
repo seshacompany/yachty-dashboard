@@ -1,20 +1,21 @@
 import { useMemo } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { ShieldAlert } from "lucide-react";
+import { useLocation } from "react-router-dom";
+// import { Link  } from "react-router-dom";
+// import { ShieldAlert } from "lucide-react";
 import { SIDEBAR_NAV_ITEMS } from "@/features/home/data/sidebarNav";
-import { useAuth } from "@/features/auth/hooks/useAuth";
-import { Button } from "@/shared/ui/button";
+// import { useAuth } from "@/features/auth/hooks/useAuth";
+// import { Button } from "@/shared/ui/button";
 
 export default function DashboardPage() {
   const { pathname } = useLocation();
-  const { hasPermission } = useAuth();
+  // const { hasPermission } = useAuth();
 
   const item = useMemo(() => {
     const item = SIDEBAR_NAV_ITEMS.find((i) => i.to === pathname);
     return item;
   }, [pathname]);
 
-  const hasAccess = !item?.permission || hasPermission(item.permission);
+  // const hasAccess = !item?.permission || hasPermission(item.permission);
   const Component = item?.Children;
 
   // if (item?.permission && !hasAccess) {
