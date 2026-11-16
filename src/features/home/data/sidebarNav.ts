@@ -64,20 +64,11 @@ export type SidebarNavItemConfig = {
 };
 
 export const PERMISSION_ROUTES: Record<StaffPermission, string> = {
-  USERS: "/users",
-  OWNERS: "/merchants/owners",
-  PLANS: "/",
-  SUBSCRIPTIONS: "/",
-  PAYMENTS: "/finance/transactions",
-  PROPERTIES: "/yachts/rental",
-  PROPERTY_REVIEWS: "/reviews/rentals",
-  OWNER_REVIEWS: "/reviews/rentals",
-  PLATFORM_REVIEWS: "/reviews/platform",
-  OWNER_REPORTS: "/reports/owners",
-  SUPPORT_TICKETS: "/messages/leads",
-  FAQS: "/frequently-asked-questions",
-  TERMS_AND_CONDITIONS: "/cms/terms",
-  STAFF: "/staff",
+  users: "/users",
+  staff: "/staff",
+  notifications: "/messages/leads",
+  boat_sales: "/yachts/sales",
+  rentals: "/yachts/rental",
 };
 
 export const SIDEBAR_NAV_ITEMS: SidebarNavItemConfig[] = [

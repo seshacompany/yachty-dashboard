@@ -7,11 +7,20 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/ui/dialog";
-import { Calendar, CheckCircle2, Mail, Phone, Shield, User } from "lucide-react";
-import { genderValue, statusBadgeStyles, statusValue } from "../data/tableData";
+import {
+  Ban,
+  Calendar,
+  CheckCircle2,
+  Mail,
+  MailCheck,
+  Phone,
+  Shield,
+  ShieldCheck,
+  User,
+} from "lucide-react";
+import { statusBadgeStyles, statusValue } from "../data/tableData";
 import {
   STAFF_PERMISSION_LABELS,
-  type Gender,
   type StaffItem,
   type StaffStatus,
 } from "../types/staff.types";
@@ -29,7 +38,7 @@ export function StaffDetailsDialog({
 }: StaffDetailsDialogProps) {
   if (!staff) return null;
 
-  const formatDate = (dateString?: string) => {
+  const formatDate = (dateString?: string | null) => {
     if (!dateString) return "—";
     try {
       const d = new Date(dateString);
@@ -47,8 +56,8 @@ export function StaffDetailsDialog({
   };
 
   const initial =
-    staff.firstName && staff.firstName.length > 0
-      ? staff.firstName[0].toUpperCase()
+    staff.staff_name && staff.staff_name.trim().length > 0
+      ? staff.staff_name.trim()[0].toUpperCase()
       : "M";
 
   const permissionsList = Array.isArray(staff.permissions)
@@ -81,14 +90,14 @@ export function StaffDetailsDialog({
             <div className="flex-1 text-center sm:text-right space-y-1">
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
                 <h3 className="text-lg font-bold text-sidebar dark:text-white">
-                  {staff.firstName} {staff.lastName}
+                  {staff.staff_name || "—"}
                 </h3>
                 <span
                   className={cn(
                     "rounded-full px-2.5 py-0.5 text-xs font-semibold border",
                     staff.status && staff.status in statusBadgeStyles
                       ? statusBadgeStyles[staff.status as StaffStatus]
-                      : "bg-muted text-sidebar"
+                      : "bg-muted text-sidebar",
                   )}
                 >
                   {(staff.status && staff.status in statusValue
@@ -109,8 +118,13 @@ export function StaffDetailsDialog({
             <div className="flex items-start gap-3 p-3 rounded-lg bg-card dark:bg-card-dark/40 border border-sidebar/10 dark:border-white/10">
               <Mail className="size-4.5 text-primary shrink-0 mt-0.5" />
               <div className="space-y-0.5 overflow-hidden">
-                <p className="text-xs text-sidebar/60 dark:text-white/60">البريد الإلكتروني</p>
-                <p className="text-sm font-medium truncate text-sidebar dark:text-white" dir="ltr">
+                <p className="text-xs text-sidebar/60 dark:text-white/60">
+                  البريد الإلكتروني
+                </p>
+                <p
+                  className="text-sm font-medium truncate text-sidebar dark:text-white"
+                  dir="ltr"
+                >
                   {staff.email || "غير محدد"}
                 </p>
               </div>
@@ -120,22 +134,53 @@ export function StaffDetailsDialog({
             <div className="flex items-start gap-3 p-3 rounded-lg bg-card dark:bg-card-dark/40 border border-sidebar/10 dark:border-white/10">
               <Phone className="size-4.5 text-primary shrink-0 mt-0.5" />
               <div className="space-y-0.5 overflow-hidden">
-                <p className="text-xs text-sidebar/60 dark:text-white/60">رقم الهاتف</p>
-                <p className="text-sm font-medium text-sidebar dark:text-white" dir="ltr">
+                <p className="text-xs text-sidebar/60 dark:text-white/60">
+                  رقم الهاتف
+                </p>
+                <p
+                  className="text-sm font-medium text-sidebar dark:text-white"
+                  dir="ltr"
+                >
                   {staff.phone || "غير محدد"}
                 </p>
               </div>
             </div>
 
-            {/* Gender */}
+            {/* Email Verified At */}
             <div className="flex items-start gap-3 p-3 rounded-lg bg-card dark:bg-card-dark/40 border border-sidebar/10 dark:border-white/10">
-              <User className="size-4.5 text-primary shrink-0 mt-0.5" />
+              <MailCheck className="size-4.5 text-primary shrink-0 mt-0.5" />
               <div className="space-y-0.5">
-                <p className="text-xs text-sidebar/60 dark:text-white/60">الجنس</p>
-                <p className="text-sm font-medium text-sidebar dark:text-white">
-                  {(staff.gender && staff.gender in genderValue
-                    ? genderValue[staff.gender as Gender]
-                    : staff.gender) || "—"}
+                <p className="text-xs text-sidebar/60 dark:text-white/60">
+                  تاريخ توثيق البريد
+                </p>
+                <p className="text-xs font-medium text-sidebar dark:text-white">
+                  {formatDate(staff.email_verified_at)}
+                </p>
+              </div>
+            </div>
+
+            {/* Approved At */}
+            <div className="flex items-start gap-3 p-3 rounded-lg bg-card dark:bg-card-dark/40 border border-sidebar/10 dark:border-white/10">
+              <ShieldCheck className="size-4.5 text-emerald-500 shrink-0 mt-0.5" />
+              <div className="space-y-0.5">
+                <p className="text-xs text-sidebar/60 dark:text-white/60">
+                  تاريخ الاعتماد
+                </p>
+                <p className="text-xs font-medium text-sidebar dark:text-white">
+                  {formatDate(staff.approved_at)}
+                </p>
+              </div>
+            </div>
+
+            {/* Suspended At */}
+            <div className="flex items-start gap-3 p-3 rounded-lg bg-card dark:bg-card-dark/40 border border-sidebar/10 dark:border-white/10">
+              <Ban className="size-4.5 text-rose-500 shrink-0 mt-0.5" />
+              <div className="space-y-0.5">
+                <p className="text-xs text-sidebar/60 dark:text-white/60">
+                  تاريخ الإيقاف
+                </p>
+                <p className="text-xs font-medium text-sidebar dark:text-white">
+                  {formatDate(staff.suspended_at)}
                 </p>
               </div>
             </div>
@@ -144,9 +189,11 @@ export function StaffDetailsDialog({
             <div className="flex items-start gap-3 p-3 rounded-lg bg-card dark:bg-card-dark/40 border border-sidebar/10 dark:border-white/10">
               <Calendar className="size-4.5 text-primary shrink-0 mt-0.5" />
               <div className="space-y-0.5">
-                <p className="text-xs text-sidebar/60 dark:text-white/60">تاريخ الإضافة</p>
+                <p className="text-xs text-sidebar/60 dark:text-white/60">
+                  تاريخ الإضافة
+                </p>
                 <p className="text-xs font-medium text-sidebar dark:text-white">
-                  {formatDate(staff.createdAt)}
+                  {formatDate(staff.created_at)}
                 </p>
               </div>
             </div>

@@ -56,7 +56,7 @@ export function DeleteStaffDialog({
           <p className="text-sm text-sidebar/80 dark:text-white/80">
             هل أنت متأكد من رغبتك في حذف الموظف{" "}
             <span className="font-bold text-destructive">
-              {staff.firstName} {staff.lastName}
+              {staff.staff_name}
             </span>
             ؟
           </p>

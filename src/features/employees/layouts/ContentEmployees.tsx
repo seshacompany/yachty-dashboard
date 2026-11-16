@@ -5,7 +5,7 @@ import { getApiErrorMessage } from "@/lib/axios";
 import { Button } from "@/shared/ui/button";
 import { useGetStaff } from "../hooks/useGetStaff";
 import { StaffTable } from "../components/StaffTable";
-import type { SortOrder, StaffStatus } from "../types/staff.types";
+import type { StaffStatus } from "../types/staff.types";
 
 interface ContentEmployeesProps {
   onTotalItemsChange?: (total: number) => void;
@@ -15,24 +15,24 @@ export function ContentEmployees({ onTotalItemsChange }: ContentEmployeesProps) 
   const [searchParams, setSearchParams] = useSearchParams();
 
   const page = Number(searchParams.get("page")) || 1;
-  const limit = Number(searchParams.get("limit")) || 10;
-  const search = searchParams.get("search") || undefined;
-  const status = (searchParams.get("status") as StaffStatus) || undefined;
+  const limit = Number(searchParams.get("limit")) || 20;
+  const staff_name = searchParams.get("staff_name") || undefined;
+  const email = searchParams.get("email") || undefined;
   const jobTitle = searchParams.get("jobTitle") || undefined;
-  const sortOrder = (searchParams.get("sortOrder") as SortOrder) || "DESC";
+  const status = (searchParams.get("status") as StaffStatus) || undefined;
 
   const { data, isLoading, isError, error, refetch, isFetching } = useGetStaff({
     page,
     limit,
-    search,
-    status,
+    staff_name,
+    email,
     jobTitle,
-    sortOrder,
+    status,
   });
 
-  const totalItems = data?.meta?.totalItems;
+  const totalItems = data?.meta?.total;
   const totalPages = data?.meta?.totalPages ?? 1;
-  const items = data?.items ?? [];
+  const items = data?.data ?? [];
 
   useEffect(() => {
     if (onTotalItemsChange && totalItems !== undefined) {

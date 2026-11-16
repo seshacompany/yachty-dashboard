@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { Eye, Loader2, Pencil, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   Table,
@@ -9,17 +9,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/shared/ui/table";
-import {
-  genderValue,
-  headers,
-  statusBadgeStyles,
-  statusValue,
-} from "../data/tableData";
+import { headers, statusBadgeStyles, statusValue } from "../data/tableData";
+import { useUpdateStaffStatus } from "../hooks/useUpdateStaffStatus";
 import { StaffSkeleton } from "./StaffSkeleton";
 import { StaffDetailsDialog } from "./StaffDetailsDialog";
 import { UpdateStaffDialog } from "./UpdateStaffDialog";
 import { DeleteStaffDialog } from "./DeleteStaffDialog";
-import type { Gender, StaffItem, StaffStatus } from "../types/staff.types";
+import type { StaffItem, StaffStatus } from "../types/staff.types";
 
 interface StaffTableProps {
   data: StaffItem[];
@@ -32,13 +28,19 @@ export function StaffTable({
   isLoading = false,
   emptyMessage = "لا يوجد موظفون متاحون حالياً",
 }: StaffTableProps) {
-  const [selectedStaffForView, setSelectedStaffForView] = useState<StaffItem | null>(null);
-  const [selectedStaffForEdit, setSelectedStaffForEdit] = useState<StaffItem | null>(null);
-  const [selectedStaffForDelete, setSelectedStaffForDelete] = useState<StaffItem | null>(null);
+  const [selectedStaffForView, setSelectedStaffForView] =
+    useState<StaffItem | null>(null);
+  const [selectedStaffForEdit, setSelectedStaffForEdit] =
+    useState<StaffItem | null>(null);
+  const [selectedStaffForDelete, setSelectedStaffForDelete] =
+    useState<StaffItem | null>(null);
 
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [togglingStaffId, setTogglingStaffId] = useState<string | null>(null);
+
+  const { mutateAsync: updateStaffStatus } = useUpdateStaffStatus();
 
   const handleOpenView = (staff: StaffItem) => {
     setSelectedStaffForView(staff);
@@ -53,6 +55,36 @@ export function StaffTable({
   const handleOpenDelete = (staff: StaffItem) => {
     setSelectedStaffForDelete(staff);
     setDeleteDialogOpen(true);
+  };
+
+  const handleToggleStatus = async (staff: StaffItem) => {
+    if (togglingStaffId) return;
+    const nextStatus: StaffStatus =
+      staff.status === "approved" ? "suspended" : "approved";
+
+    setTogglingStaffId(staff.id);
+    try {
+      await updateStaffStatus({ id: staff.id, status: nextStatus });
+    } catch {
+      // Error toast is handled inside useUpdateStaffStatus
+    } finally {
+      setTogglingStaffId(null);
+    }
+  };
+
+  const formatDate = (dateString?: string | null) => {
+    if (!dateString) return "—";
+    try {
+      const d = new Date(dateString);
+      if (isNaN(d.getTime())) return dateString;
+      return d.toLocaleDateString("ar-EG", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+    } catch {
+      return dateString;
+    }
   };
 
   return (
@@ -89,9 +121,10 @@ export function StaffTable({
             <TableBody>
               {data.map((staff) => {
                 const initial =
-                  staff.firstName && staff.firstName.length > 0
-                    ? staff.firstName[0].toUpperCase()
+                  staff.staff_name && staff.staff_name.trim().length > 0
+                    ? staff.staff_name.trim()[0].toUpperCase()
                     : "M";
+                const isRowToggling = togglingStaffId === staff.id;
 
                 return (
                   <TableRow
@@ -105,7 +138,7 @@ export function StaffTable({
                           {initial}
                         </div>
                         <span className="font-semibold text-sidebar dark:text-white text-sm">
-                          {staff.firstName} {staff.lastName}
+                          {staff.staff_name || "—"}
                         </span>
                       </div>
                     </TableCell>
@@ -131,28 +164,42 @@ export function StaffTable({
                       </div>
                     </TableCell>
 
-                    {/* Gender */}
+                    {/* Interactive Status Toggle */}
                     <TableCell className="p-3 py-4 text-center">
-                      <span className="text-sidebar/80 dark:text-white/80 text-xs font-medium">
-                        {(staff.gender && staff.gender in genderValue
-                          ? genderValue[staff.gender as Gender]
-                          : staff.gender) || "—"}
-                      </span>
-                    </TableCell>
-
-                    {/* Status */}
-                    <TableCell className="p-3 py-4 text-center">
-                      <span
+                      <button
+                        type="button"
+                        onClick={() => handleToggleStatus(staff)}
+                        disabled={Boolean(togglingStaffId)}
+                        title={
+                          staff.status === "approved"
+                            ? "اضغط لإيقاف الموظف"
+                            : "اضغط لتفعيل الموظف"
+                        }
                         className={cn(
-                          "rounded-full px-2.5 py-0.5 text-xs font-semibold border inline-block",
+                          "rounded-full px-3 py-1 text-xs font-semibold border inline-flex items-center justify-center gap-1.5 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed",
                           staff.status && staff.status in statusBadgeStyles
                             ? statusBadgeStyles[staff.status as StaffStatus]
-                            : "bg-muted text-sidebar"
+                            : "bg-muted text-sidebar",
                         )}
                       >
-                        {(staff.status && staff.status in statusValue
-                          ? statusValue[staff.status as StaffStatus]
-                          : staff.status) || "—"}
+                        {isRowToggling && (
+                          <Loader2
+                            className="size-3 animate-spin"
+                            aria-hidden
+                          />
+                        )}
+                        <span>
+                          {(staff.status && staff.status in statusValue
+                            ? statusValue[staff.status as StaffStatus]
+                            : staff.status) || "—"}
+                        </span>
+                      </button>
+                    </TableCell>
+
+                    {/* Created At */}
+                    <TableCell className="p-3 py-4 text-center">
+                      <span className="text-sidebar/70 dark:text-white/70 text-xs">
+                        {formatDate(staff.created_at)}
                       </span>
                     </TableCell>
 

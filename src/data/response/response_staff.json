@@ -1,43 +1,32 @@
 {
   "success": true,
-  "message": "تمت العملية بنجاح",
-  "data": {
-    "items": [
-      {
-        "id": "277cee1d-8d72-414f-8e00-5b9ec582ddb5",
-        "firstName": "ahmed",
-        "lastName": "mansour",
-        "email": "ahmed11ahmed2992002@gmail.com",
-        "phone": "01019472864",
-        "gender": "MALE",
-        "status": "ACTIVE",
-        "adminType": "STAFF",
-        "jobTitle": "Software developer",
-        "permissions": [
-          "USERS",
-          "OWNERS",
-          "PLANS",
-          "SUBSCRIPTIONS",
-          "PAYMENTS",
-          "PROPERTIES",
-          "REVIEWS",
-          "OWNER_REPORTS",
-          "SUPPORT_TICKETS",
-          "FAQS",
-          "TERMS_AND_CONDITIONS",
-          "STAFF"
-        ],
-        "createdAt": "2026-08-30T12:17:42.427Z",
-        "updatedAt": "2026-08-30T12:18:24.535Z"
-      }
-    ],
-    "meta": {
-      "page": 1,
-      "limit": 10,
-      "totalItems": 1,
-      "totalPages": 1,
-      "hasNextPage": false,
-      "hasPreviousPage": false
+  "message": "Operation completed successfully",
+  "data": [
+    {
+      "id": "ffdb293e-005e-45b9-88c4-e7f403c080bf",
+      "email": "ahmed11ahmed2992002@gmail.com",
+      "phone": "+201012345678",
+      "role": "admin",
+      "admin_type": "staff",
+      "status": "approved",
+      "staff_name": "Ahmed Mansour",
+      "jobTitle": "Account Verification Specialist",
+      "permissions": [
+        "users"
+      ],
+      "email_verified_at": "2026-11-16T07:54:14.582Z",
+      "approved_at": "2026-11-16T07:54:14.582Z",
+      "suspended_at": null,
+      "created_at": "2026-11-16T07:54:14.625Z",
+      "updated_at": "2026-11-16T07:54:14.625Z"
     }
+  ],
+  "meta": {
+    "page": 1,
+    "limit": 20,
+    "total": 1,
+    "totalPages": 1,
+    "hasPrev": false,
+    "hasNext": false
   }
 }

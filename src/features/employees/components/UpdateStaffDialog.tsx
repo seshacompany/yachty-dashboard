@@ -14,13 +14,6 @@ import { Button } from "@/shared/ui/button";
 import { Checkbox } from "@/ui/checkbox";
 import { Label } from "@/shared/ui/label";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/ui/select";
-import {
   updateStaffSchema,
   type UpdateStaffFormValues,
 } from "../schemas/staff.schema";
@@ -28,10 +21,8 @@ import { useUpdateStaff } from "../hooks/useUpdateStaff";
 import {
   STAFF_PERMISSIONS,
   STAFF_PERMISSION_LABELS,
-  type Gender,
   type StaffItem,
   type StaffPermission,
-  type StaffStatus,
   type UpdateStaffPayload,
 } from "../types/staff.types";
 
@@ -40,6 +31,15 @@ interface UpdateStaffDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
+
+const filterValidPermissions = (
+  perms?: readonly string[],
+): StaffPermission[] => {
+  if (!Array.isArray(perms)) return [];
+  return perms.filter((p): p is StaffPermission =>
+    (STAFF_PERMISSIONS as readonly string[]).includes(p),
+  );
+};
 
 export function UpdateStaffDialog({
   staff,
@@ -59,33 +59,25 @@ export function UpdateStaffDialog({
   } = useForm<UpdateStaffFormValues>({
     resolver: zodResolver(updateStaffSchema),
     defaultValues: {
-      firstName: staff?.firstName || "",
-      lastName: staff?.lastName || "",
-      email: staff?.email || "",
+      staff_name: staff?.staff_name || "",
       phone: staff?.phone || "",
-      status: (staff?.status as StaffStatus) || "ACTIVE",
-      gender: (staff?.gender as Gender) || "MALE",
       jobTitle: staff?.jobTitle || "",
-      permissions: Array.isArray(staff?.permissions) ? staff.permissions : [],
+      permissions: filterValidPermissions(staff?.permissions),
     },
   });
 
   const rawPermissions = watch("permissions");
-  const selectedPermissions = Array.isArray(rawPermissions) ? rawPermissions : [];
-  const selectedGender = watch("gender");
-  const selectedStatus = watch("status");
+  const selectedPermissions = Array.isArray(rawPermissions)
+    ? rawPermissions
+    : [];
 
   useEffect(() => {
     if (open && staff) {
       reset({
-        firstName: staff.firstName || "",
-        lastName: staff.lastName || "",
-        email: staff.email || "",
+        staff_name: staff.staff_name || "",
         phone: staff.phone || "",
-        status: (staff.status as StaffStatus) || "ACTIVE",
-        gender: (staff.gender as Gender) || "MALE",
         jobTitle: staff.jobTitle || "",
-        permissions: Array.isArray(staff.permissions) ? staff.permissions : [],
+        permissions: filterValidPermissions(staff.permissions),
       });
     }
   }, [open, staff, reset]);
@@ -128,13 +120,9 @@ export function UpdateStaffDialog({
     if (!staff) return;
     try {
       const payload: UpdateStaffPayload = {
-        firstName: data.firstName.trim(),
-        lastName: data.lastName.trim(),
-        email: data.email ? data.email.trim() : undefined,
-        phone: data.phone ? data.phone.trim() : undefined,
-        status: data.status as StaffStatus,
-        gender: data.gender as Gender,
-        jobTitle: data.jobTitle ? data.jobTitle.trim() : undefined,
+        staff_name: data.staff_name.trim(),
+        phone: data.phone.trim(),
+        jobTitle: data.jobTitle.trim(),
         permissions: data.permissions as StaffPermission[],
       };
 
@@ -154,7 +142,7 @@ export function UpdateStaffDialog({
         <DialogHeader className="border-b border-sidebar/10 dark:border-white/10 pb-4">
           <DialogTitle className="text-xl font-bold flex items-center gap-2 text-sidebar dark:text-white">
             <Edit className="size-5 text-primary" />
-            تعديل بيانات الموظف: {staff?.firstName} {staff?.lastName}
+            تعديل بيانات الموظف: {staff?.staff_name}
           </DialogTitle>
           <DialogDescription className="sr-only">
             نموذج تعديل بيانات وصلاحيات الموظف
@@ -164,60 +152,21 @@ export function UpdateStaffDialog({
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 pt-2">
           {/* Personal Info Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* First Name */}
-            <div className="space-y-1.5">
-              <Label htmlFor="edit-firstName" className="text-xs font-semibold">
-                الاسم الأول <span className="text-destructive">*</span>
+            {/* Staff Name */}
+            <div className="space-y-1.5 md:col-span-2">
+              <Label htmlFor="edit-staff_name" className="text-xs font-semibold">
+                الاسم <span className="text-destructive">*</span>
               </Label>
               <Input
-                id="edit-firstName"
-                placeholder="أدخل الاسم الأول..."
-                {...register("firstName")}
+                id="edit-staff_name"
+                placeholder="أدخل اسم الموظف..."
+                {...register("staff_name")}
                 disabled={isPending}
                 className="bg-muted/40 dark:bg-popover-dark/40"
               />
-              {errors.firstName && (
+              {errors.staff_name && (
                 <p className="text-xs text-destructive">
-                  {errors.firstName.message}
-                </p>
-              )}
-            </div>
-
-            {/* Last Name */}
-            <div className="space-y-1.5">
-              <Label htmlFor="edit-lastName" className="text-xs font-semibold">
-                اسم العائلة <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="edit-lastName"
-                placeholder="أدخل اسم العائلة..."
-                {...register("lastName")}
-                disabled={isPending}
-                className="bg-muted/40 dark:bg-popover-dark/40"
-              />
-              {errors.lastName && (
-                <p className="text-xs text-destructive">
-                  {errors.lastName.message}
-                </p>
-              )}
-            </div>
-
-            {/* Email */}
-            <div className="space-y-1.5">
-              <Label htmlFor="edit-email" className="text-xs font-semibold">
-                البريد الإلكتروني
-              </Label>
-              <Input
-                id="edit-email"
-                type="email"
-                placeholder="example@domain.com"
-                {...register("email")}
-                disabled={isPending}
-                className="bg-muted/40 dark:bg-popover-dark/40"
-              />
-              {errors.email && (
-                <p className="text-xs text-destructive">
-                  {errors.email.message}
+                  {errors.staff_name.message}
                 </p>
               )}
             </div>
@@ -225,11 +174,11 @@ export function UpdateStaffDialog({
             {/* Phone */}
             <div className="space-y-1.5">
               <Label htmlFor="edit-phone" className="text-xs font-semibold">
-                رقم الهاتف
+                رقم الهاتف <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="edit-phone"
-                placeholder="01xxxxxxxxx"
+                placeholder="+201012345678"
                 {...register("phone")}
                 disabled={isPending}
                 className="bg-muted/40 dark:bg-popover-dark/40"
@@ -244,11 +193,11 @@ export function UpdateStaffDialog({
             {/* Job Title */}
             <div className="space-y-1.5">
               <Label htmlFor="edit-jobTitle" className="text-xs font-semibold">
-                المسمى الوظيفي
+                المسمى الوظيفي <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="edit-jobTitle"
-                placeholder="مثال: مطور برمجيات، مسؤول دعم..."
+                placeholder="مثال: Account Verification Specialist"
                 {...register("jobTitle")}
                 disabled={isPending}
                 className="bg-muted/40 dark:bg-popover-dark/40"
@@ -256,67 +205,6 @@ export function UpdateStaffDialog({
               {errors.jobTitle && (
                 <p className="text-xs text-destructive">
                   {errors.jobTitle.message}
-                </p>
-              )}
-            </div>
-
-            {/* Gender */}
-            <div className="space-y-1.5">
-              <Label className="text-xs font-semibold">
-                الجنس <span className="text-destructive">*</span>
-              </Label>
-              <Select
-                value={selectedGender}
-                onValueChange={(val) =>
-                  setValue("gender", val as Gender, {
-                    shouldValidate: true,
-                    shouldDirty: true,
-                  })
-                }
-                disabled={isPending}
-              >
-                <SelectTrigger className="bg-muted/40 dark:bg-popover-dark/40">
-                  <SelectValue placeholder="اختر الجنس" />
-                </SelectTrigger>
-                <SelectContent dir="rtl">
-                  <SelectItem value="MALE">ذكر</SelectItem>
-                  <SelectItem value="FEMALE">أنثى</SelectItem>
-                </SelectContent>
-              </Select>
-              {errors.gender && (
-                <p className="text-xs text-destructive">
-                  {errors.gender.message}
-                </p>
-              )}
-            </div>
-
-            {/* Status */}
-            <div className="space-y-1.5 md:col-span-2">
-              <Label className="text-xs font-semibold">
-                حالة الحساب <span className="text-destructive">*</span>
-              </Label>
-              <Select
-                value={selectedStatus}
-                onValueChange={(val) =>
-                  setValue("status", val as StaffStatus, {
-                    shouldValidate: true,
-                    shouldDirty: true,
-                  })
-                }
-                disabled={isPending}
-              >
-                <SelectTrigger className="bg-muted/40 dark:bg-popover-dark/40">
-                  <SelectValue placeholder="اختر حالة الحساب" />
-                </SelectTrigger>
-                <SelectContent dir="rtl">
-                  <SelectItem value="ACTIVE">نشط (ACTIVE)</SelectItem>
-                  <SelectItem value="PENDING">معلق (PENDING)</SelectItem>
-                  <SelectItem value="SUSPENDED">موقوف (SUSPENDED)</SelectItem>
-                </SelectContent>
-              </Select>
-              {errors.status && (
-                <p className="text-xs text-destructive">
-                  {errors.status.message}
                 </p>
               )}
             </div>
@@ -355,7 +243,6 @@ export function UpdateStaffDialog({
               </div>
             </div>
 
-            {/* Permission Checkboxes Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 pt-2">
               {STAFF_PERMISSIONS.map((perm) => {
                 const isChecked = Boolean(selectedPermissions.includes(perm));

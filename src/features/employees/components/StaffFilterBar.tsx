@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import {
-  ArrowDownAZ,
-  ArrowUpAZ,
-  FilterX,
-  Plus,
-  Search,
-} from "lucide-react";
+import { Briefcase, FilterX, Mail, Plus, Search } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
 import {
@@ -16,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/ui/select";
-import type { SortOrder, StaffStatus } from "../types/staff.types";
+import type { StaffStatus } from "../types/staff.types";
 
 export type FilterStatus = StaffStatus | "ALL";
 
@@ -28,26 +22,26 @@ interface StaffFilterBarProps {
 export function StaffFilterBar({ onAddNew, totalItems }: StaffFilterBarProps) {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const currentSearch = searchParams.get("search") || "";
-  const currentStatus = (searchParams.get("status") as FilterStatus) || "ALL";
+  const currentName = searchParams.get("staff_name") || "";
+  const currentEmail = searchParams.get("email") || "";
   const currentJobTitle = searchParams.get("jobTitle") || "";
-  const currentSortOrder = (searchParams.get("sortOrder") as SortOrder) || "DESC";
+  const currentStatus = (searchParams.get("status") as FilterStatus) || "ALL";
 
-  const [searchTerm, setSearchTerm] = useState(currentSearch);
+  const [nameTerm, setNameTerm] = useState(currentName);
+  const [emailTerm, setEmailTerm] = useState(currentEmail);
   const [jobTitleTerm, setJobTitleTerm] = useState(currentJobTitle);
 
-  // Debounced search sync
   useEffect(() => {
-    if (searchTerm.trim() === currentSearch.trim()) return;
+    if (nameTerm.trim() === currentName.trim()) return;
 
     const timer = setTimeout(() => {
       setSearchParams((prev) => {
         const next = new URLSearchParams(prev);
-        const trimmed = searchTerm.trim();
+        const trimmed = nameTerm.trim();
         if (trimmed) {
-          next.set("search", trimmed);
+          next.set("staff_name", trimmed);
         } else {
-          next.delete("search");
+          next.delete("staff_name");
         }
         next.set("page", "1");
         return next;
@@ -55,9 +49,28 @@ export function StaffFilterBar({ onAddNew, totalItems }: StaffFilterBarProps) {
     }, 400);
 
     return () => clearTimeout(timer);
-  }, [searchTerm, currentSearch, setSearchParams]);
+  }, [nameTerm, currentName, setSearchParams]);
 
-  // Debounced jobTitle sync
+  useEffect(() => {
+    if (emailTerm.trim() === currentEmail.trim()) return;
+
+    const timer = setTimeout(() => {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        const trimmed = emailTerm.trim();
+        if (trimmed) {
+          next.set("email", trimmed);
+        } else {
+          next.delete("email");
+        }
+        next.set("page", "1");
+        return next;
+      });
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [emailTerm, currentEmail, setSearchParams]);
+
   useEffect(() => {
     if (jobTitleTerm.trim() === currentJobTitle.trim()) return;
 
@@ -78,10 +91,13 @@ export function StaffFilterBar({ onAddNew, totalItems }: StaffFilterBarProps) {
     return () => clearTimeout(timer);
   }, [jobTitleTerm, currentJobTitle, setSearchParams]);
 
-  // Sync state if URL changes externally
   useEffect(() => {
-    setSearchTerm(currentSearch);
-  }, [currentSearch]);
+    setNameTerm(currentName);
+  }, [currentName]);
+
+  useEffect(() => {
+    setEmailTerm(currentEmail);
+  }, [currentEmail]);
 
   useEffect(() => {
     setJobTitleTerm(currentJobTitle);
@@ -100,109 +116,91 @@ export function StaffFilterBar({ onAddNew, totalItems }: StaffFilterBarProps) {
     });
   };
 
-  const toggleSortOrder = () => {
-    const nextOrder: SortOrder = currentSortOrder === "ASC" ? "DESC" : "ASC";
-    setSearchParams((prev) => {
-      const next = new URLSearchParams(prev);
-      next.set("sortOrder", nextOrder);
-      next.set("page", "1");
-      return next;
-    });
-  };
-
   const handleResetFilters = () => {
-    setSearchTerm("");
+    setNameTerm("");
+    setEmailTerm("");
     setJobTitleTerm("");
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
-      next.delete("search");
-      next.delete("status");
+      next.delete("staff_name");
+      next.delete("email");
       next.delete("jobTitle");
-      next.set("sortOrder", "DESC");
+      next.delete("status");
       next.set("page", "1");
       return next;
     });
   };
 
   const hasActiveFilters = Boolean(
-    currentSearch ||
-      (currentStatus && currentStatus !== "ALL") ||
+    currentName ||
+      currentEmail ||
       currentJobTitle ||
-      currentSortOrder !== "DESC"
+      (currentStatus && currentStatus !== "ALL"),
   );
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Top Controls Row */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-        {/* Search by Name or Email */}
-        <div className="relative flex-1 min-w-[220px]">
-          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5 text-sidebar/50 dark:text-white/50">
-            <Search className="size-4" />
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 flex-1">
+          {/* Search by Name */}
+          <div className="relative">
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5 text-sidebar/50 dark:text-white/50">
+              <Search className="size-4" />
+            </div>
+            <Input
+              type="text"
+              value={nameTerm}
+              onChange={(e) => setNameTerm(e.target.value)}
+              placeholder="البحث بالاسم..."
+              className="w-full rounded-xl border-sidebar/20 dark:border-white/10 bg-card dark:bg-card-dark py-2.5 pl-4 pr-10 text-sm text-sidebar dark:text-white"
+            />
           </div>
-          <Input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="البحث بالاسم أو البريد الإلكتروني..."
-            className="w-full rounded-xl border-sidebar/20 dark:border-white/10 bg-card dark:bg-card-dark py-2.5 pl-4 pr-10 text-sm text-sidebar dark:text-white"
-          />
+
+          {/* Search by Email */}
+          <div className="relative">
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5 text-sidebar/50 dark:text-white/50">
+              <Mail className="size-4" />
+            </div>
+            <Input
+              type="text"
+              value={emailTerm}
+              onChange={(e) => setEmailTerm(e.target.value)}
+              placeholder="البحث بالبريد الإلكتروني..."
+              className="w-full rounded-xl border-sidebar/20 dark:border-white/10 bg-card dark:bg-card-dark py-2.5 pl-4 pr-10 text-sm text-sidebar dark:text-white"
+            />
+          </div>
+
+          {/* Search by Job Title */}
+          <div className="relative">
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5 text-sidebar/50 dark:text-white/50">
+              <Briefcase className="size-4" />
+            </div>
+            <Input
+              type="text"
+              value={jobTitleTerm}
+              onChange={(e) => setJobTitleTerm(e.target.value)}
+              placeholder="البحث بالمسمى الوظيفي..."
+              className="w-full rounded-xl border-sidebar/20 dark:border-white/10 bg-card dark:bg-card-dark py-2.5 pl-4 pr-10 text-sm text-sidebar dark:text-white"
+            />
+          </div>
+
+          {/* Status Dropdown */}
+          <div>
+            <Select value={currentStatus} onValueChange={handleStatusChange}>
+              <SelectTrigger className="w-full rounded-xl border-sidebar/20 dark:border-white/10 bg-card dark:bg-card-dark text-sm">
+                <SelectValue placeholder="حالة الحساب" />
+              </SelectTrigger>
+              <SelectContent dir="rtl">
+                <SelectItem value="ALL">جميع الحالات</SelectItem>
+                <SelectItem value="approved">نشط (approved)</SelectItem>
+                <SelectItem value="suspended">موقوف (suspended)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
-        {/* Job Title Filter */}
-        <div className="w-full lg:w-56">
-          <Input
-            type="text"
-            value={jobTitleTerm}
-            onChange={(e) => setJobTitleTerm(e.target.value)}
-            placeholder="تصفية حسب المسمى الوظيفي..."
-            className="w-full rounded-xl border-sidebar/20 dark:border-white/10 bg-card dark:bg-card-dark py-2.5 px-4 text-sm text-sidebar dark:text-white"
-          />
-        </div>
-
-        {/* Status Dropdown */}
-        <div className="w-full lg:w-44">
-          <Select
-            value={currentStatus}
-            onValueChange={handleStatusChange}
-          >
-            <SelectTrigger className="w-full rounded-xl border-sidebar/20 dark:border-white/10 bg-card dark:bg-card-dark text-sm">
-              <SelectValue placeholder="حالة الحساب" />
-            </SelectTrigger>
-            <SelectContent dir="rtl">
-              <SelectItem value="ALL">جميع الحالات</SelectItem>
-              <SelectItem value="ACTIVE">نشط (ACTIVE)</SelectItem>
-              <SelectItem value="PENDING">معلق (PENDING)</SelectItem>
-              <SelectItem value="SUSPENDED">موقوف (SUSPENDED)</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Action Buttons: Sort, Reset, Add New */}
+        {/* Action Buttons: Reset, Total, Add New */}
         <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-          {/* Sort Toggle */}
-          <Button
-            type="button"
-            variant="outline"
-            onClick={toggleSortOrder}
-            className="flex items-center gap-2 rounded-xl border-sidebar/20 dark:border-white/10 bg-card dark:bg-card-dark px-3 py-2 text-sm text-sidebar dark:text-white hover:bg-muted/50 cursor-pointer"
-            title={
-              currentSortOrder === "ASC"
-                ? "الترتيب: من الأقدم للأحدث"
-                : "الترتيب: من الأحدث للأقدم"
-            }
-          >
-            {currentSortOrder === "ASC" ? (
-              <ArrowUpAZ className="size-4 text-primary" />
-            ) : (
-              <ArrowDownAZ className="size-4 text-primary" />
-            )}
-            <span className="text-xs">
-              {currentSortOrder === "ASC" ? "تصاعدي" : "تنازلي"}
-            </span>
-          </Button>
-
-          {/* Reset Filters Button */}
           {hasActiveFilters && (
             <Button
               type="button"
@@ -216,7 +214,6 @@ export function StaffFilterBar({ onAddNew, totalItems }: StaffFilterBarProps) {
             </Button>
           )}
 
-          {/* Total Items Badge */}
           {totalItems !== undefined && (
             <div className="hidden sm:flex items-center gap-1.5 rounded-xl border border-sidebar/20 dark:border-white/10 bg-card dark:bg-card-dark px-3 py-2 text-xs text-sidebar/70 dark:text-white/70">
               <span>الإجمالي:</span>
@@ -226,7 +223,6 @@ export function StaffFilterBar({ onAddNew, totalItems }: StaffFilterBarProps) {
             </div>
           )}
 
-          {/* Add Staff Button */}
           <Button
             type="button"
             onClick={onAddNew}

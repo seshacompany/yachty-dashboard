@@ -16,11 +16,8 @@ export function StaffSkeleton({ rows = 5 }: StaffSkeletonProps) {
           {/* Name & Avatar Skeleton */}
           <TableCell className="p-3 py-5 text-center">
             <div className="flex items-center justify-center gap-3">
-              <Skeleton className="size-9 rounded-full shrink-0" />
-              <div className="flex flex-col gap-1.5 text-right">
-                <Skeleton className="h-4 w-28" />
-                <Skeleton className="h-3 w-16" />
-              </div>
+              <Skeleton className="size-8 rounded-full shrink-0" />
+              <Skeleton className="h-4 w-28" />
             </div>
           </TableCell>
 
@@ -37,14 +34,14 @@ export function StaffSkeleton({ rows = 5 }: StaffSkeletonProps) {
             </div>
           </TableCell>
 
-          {/* Gender Skeleton */}
-          <TableCell className="p-3 py-5 text-center">
-            <Skeleton className="h-4 w-12 mx-auto" />
-          </TableCell>
-
           {/* Status Skeleton */}
           <TableCell className="p-3 py-5 text-center">
             <Skeleton className="h-6 w-16 mx-auto rounded-full" />
+          </TableCell>
+
+          {/* Created At Skeleton */}
+          <TableCell className="p-3 py-5 text-center">
+            <Skeleton className="h-4 w-20 mx-auto" />
           </TableCell>
 
           {/* Actions Skeleton */}

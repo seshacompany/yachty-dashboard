@@ -1,109 +1,60 @@
-export const STAFF_STATUSES = ["PENDING", "ACTIVE", "SUSPENDED"] as const;
+export const STAFF_STATUSES = ["approved", "suspended"] as const;
 export type StaffStatus = (typeof STAFF_STATUSES)[number];
 
-export const GENDERS = ["MALE", "FEMALE"] as const;
-export type Gender = (typeof GENDERS)[number];
-
-export type SortOrder = "ASC" | "DESC";
-
 export const STAFF_PERMISSIONS = [
-  "USERS",
-  "OWNERS",
-  "PLANS",
-  "SUBSCRIPTIONS",
-  "PAYMENTS",
-  "PROPERTIES",
-  "PROPERTY_REVIEWS",
-  "OWNER_REVIEWS",
-  "PLATFORM_REVIEWS",
-  "OWNER_REPORTS",
-  "SUPPORT_TICKETS",
-  "FAQS",
-  "TERMS_AND_CONDITIONS",
-  "STAFF",
+  "users",
+  "staff",
+  "notifications",
+  "boat_sales",
+  "rentals",
 ] as const;
 
 export type StaffPermission = (typeof STAFF_PERMISSIONS)[number];
 
 export const STAFF_PERMISSION_LABELS: Record<StaffPermission, string> = {
-  USERS: "إدارة المستخدمين",
-  OWNERS: "إدارة أصحاب السكن",
-  PLANS: "إدارة الباقات",
-  SUBSCRIPTIONS: "إدارة الاشتراكات",
-  PAYMENTS: "إدارة المدفوعات",
-  PROPERTIES: "إدارة الوحدات والعقارات",
-  PROPERTY_REVIEWS: "تقييمات العقارات",
-  OWNER_REVIEWS: "تقييمات أصحاب السكن",
-  PLATFORM_REVIEWS: "تقييمات المنصة",
-  OWNER_REPORTS: "بلاغات أصحاب السكن",
-  SUPPORT_TICKETS: "تذاكر الدعم والرسائل",
-  FAQS: "الأسئلة الشائعة",
-  TERMS_AND_CONDITIONS: "الشروط والأحكام",
-  STAFF: "إدارة الموظفين",
+  users: "إدارة المستخدمين",
+  staff: "إدارة الموظفين",
+  notifications: "الإشعارات",
+  boat_sales: "مبيعات اليخوت",
+  rentals: "إيجارات اليخوت",
 };
 
 export const STAFF_STATUS_LABELS: Record<StaffStatus, string> = {
-  ACTIVE: "نشط",
-  PENDING: "معلق",
-  SUSPENDED: "موقوف",
-};
-
-export const STAFF_GENDER_LABELS: Record<Gender, string> = {
-  MALE: "ذكر",
-  FEMALE: "أنثى",
+  approved: "نشط",
+  suspended: "موقوف",
 };
 
 export interface StaffItem {
   id: string;
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  phone?: string | null;
-  gender?: Gender;
-  status?: StaffStatus | string;
-  adminType?: "STAFF" | "ADMIN" | string;
-  jobTitle?: string | null;
-  permissions?: StaffPermission[];
-  createdAt?: string;
-  updatedAt?: string;
-
-  // Legacy fields for backwards compatibility:
-  employee_name?: string;
-  phone_number?: string;
-  job_title?: string;
-  progress?: string;
-  customers?: boolean;
-  unity_owners?: boolean;
-  units?: boolean;
-  advertisements?: boolean;
-  payments?: boolean;
-  content?: boolean;
-  messages?: boolean;
-  frequently_asked_questions?: boolean;
-  terms_and_conditions?: boolean;
-  reviews?: boolean;
-  employees?: boolean;
-  real_estate?: boolean;
+  email: string;
+  phone: string | null;
+  role: string;
+  admin_type: string;
+  status: StaffStatus;
+  staff_name: string;
+  jobTitle: string | null;
+  permissions: StaffPermission[];
+  email_verified_at: string | null;
+  approved_at: string | null;
+  suspended_at: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface PaginationMeta {
   page: number;
   limit: number;
-  totalItems: number;
+  total: number;
   totalPages: number;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-}
-
-export interface StaffData {
-  items: StaffItem[];
-  meta: PaginationMeta;
+  hasPrev: boolean;
+  hasNext: boolean;
 }
 
 export interface StaffResponse {
   success: boolean;
   message: string;
-  data: StaffData;
+  data: StaffItem[];
+  meta: PaginationMeta;
 }
 
 export interface StaffSingleResponse {
@@ -125,24 +76,30 @@ export interface StaffActionResponse {
 }
 
 export interface CreateStaffPayload {
-  firstName: string;
-  lastName: string;
-  email?: string;
-  phone?: string;
+  staff_name: string;
+  email: string;
   password: string;
-  status?: StaffStatus;
-  gender: Gender;
-  jobTitle?: string;
+  phone: string;
+  jobTitle: string;
   permissions: StaffPermission[];
 }
 
-export type UpdateStaffPayload = Omit<CreateStaffPayload, "password">;
+export interface UpdateStaffPayload {
+  staff_name: string;
+  phone: string;
+  jobTitle: string;
+  permissions: StaffPermission[];
+}
+
+export interface UpdateStaffStatusPayload {
+  status: StaffStatus;
+}
 
 export interface StaffQueryParams {
-  search?: string;
-  status?: StaffStatus;
+  staff_name?: string;
+  email?: string;
   jobTitle?: string;
-  sortOrder?: SortOrder;
+  status?: StaffStatus;
   page?: number;
   limit?: number;
 }

@@ -14,13 +14,6 @@ import { Button } from "@/shared/ui/button";
 import { Checkbox } from "@/ui/checkbox";
 import { Label } from "@/shared/ui/label";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/ui/select";
-import {
   createStaffSchema,
   type CreateStaffFormValues,
 } from "../schemas/staff.schema";
@@ -29,9 +22,7 @@ import {
   STAFF_PERMISSIONS,
   STAFF_PERMISSION_LABELS,
   type CreateStaffPayload,
-  type Gender,
   type StaffPermission,
-  type StaffStatus,
 } from "../types/staff.types";
 
 interface CreateStaffDialogProps {
@@ -57,22 +48,19 @@ export function CreateStaffDialog({
   } = useForm<CreateStaffFormValues>({
     resolver: zodResolver(createStaffSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
+      staff_name: "",
       email: "",
       phone: "",
       password: "",
-      status: "ACTIVE",
-      gender: "MALE",
       jobTitle: "",
       permissions: [],
     },
   });
 
   const rawPermissions = watch("permissions");
-  const selectedPermissions = Array.isArray(rawPermissions) ? rawPermissions : [];
-  const selectedGender = watch("gender");
-  const selectedStatus = watch("status");
+  const selectedPermissions = Array.isArray(rawPermissions)
+    ? rawPermissions
+    : [];
 
   const handleTogglePermission = (permission: StaffPermission) => {
     const current = Array.isArray(getValues("permissions"))
@@ -106,13 +94,10 @@ export function CreateStaffDialog({
   const handleClose = () => {
     if (isPending) return;
     reset({
-      firstName: "",
-      lastName: "",
+      staff_name: "",
       email: "",
       phone: "",
       password: "",
-      status: "ACTIVE",
-      gender: "MALE",
       jobTitle: "",
       permissions: [],
     });
@@ -123,14 +108,11 @@ export function CreateStaffDialog({
   const onSubmit = async (data: CreateStaffFormValues) => {
     try {
       const payload: CreateStaffPayload = {
-        firstName: data.firstName.trim(),
-        lastName: data.lastName.trim(),
-        email: data.email ? data.email.trim() : undefined,
-        phone: data.phone ? data.phone.trim() : undefined,
+        staff_name: data.staff_name.trim(),
+        email: data.email.trim(),
         password: data.password,
-        status: data.status as StaffStatus,
-        gender: data.gender as Gender,
-        jobTitle: data.jobTitle ? data.jobTitle.trim() : undefined,
+        phone: data.phone.trim(),
+        jobTitle: data.jobTitle.trim(),
         permissions: data.permissions as StaffPermission[],
       };
 
@@ -160,40 +142,21 @@ export function CreateStaffDialog({
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 pt-2">
           {/* Personal Info Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* First Name */}
+            {/* Staff Name */}
             <div className="space-y-1.5">
-              <Label htmlFor="firstName" className="text-xs font-semibold">
-                الاسم الأول <span className="text-destructive">*</span>
+              <Label htmlFor="staff_name" className="text-xs font-semibold">
+                الاسم <span className="text-destructive">*</span>
               </Label>
               <Input
-                id="firstName"
-                placeholder="أدخل الاسم الأول..."
-                {...register("firstName")}
+                id="staff_name"
+                placeholder="أدخل اسم الموظف..."
+                {...register("staff_name")}
                 disabled={isPending}
                 className="bg-muted/40 dark:bg-popover-dark/40"
               />
-              {errors.firstName && (
+              {errors.staff_name && (
                 <p className="text-xs text-destructive">
-                  {errors.firstName.message}
-                </p>
-              )}
-            </div>
-
-            {/* Last Name */}
-            <div className="space-y-1.5">
-              <Label htmlFor="lastName" className="text-xs font-semibold">
-                اسم العائلة <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="lastName"
-                placeholder="أدخل اسم العائلة..."
-                {...register("lastName")}
-                disabled={isPending}
-                className="bg-muted/40 dark:bg-popover-dark/40"
-              />
-              {errors.lastName && (
-                <p className="text-xs text-destructive">
-                  {errors.lastName.message}
+                  {errors.staff_name.message}
                 </p>
               )}
             </div>
@@ -201,7 +164,7 @@ export function CreateStaffDialog({
             {/* Email */}
             <div className="space-y-1.5">
               <Label htmlFor="email" className="text-xs font-semibold">
-                البريد الإلكتروني
+                البريد الإلكتروني <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="email"
@@ -221,11 +184,11 @@ export function CreateStaffDialog({
             {/* Phone */}
             <div className="space-y-1.5">
               <Label htmlFor="phone" className="text-xs font-semibold">
-                رقم الهاتف
+                رقم الهاتف <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="phone"
-                placeholder="01xxxxxxxxx"
+                placeholder="+201012345678"
                 {...register("phone")}
                 disabled={isPending}
                 className="bg-muted/40 dark:bg-popover-dark/40"
@@ -233,6 +196,25 @@ export function CreateStaffDialog({
               {errors.phone && (
                 <p className="text-xs text-destructive">
                   {errors.phone.message}
+                </p>
+              )}
+            </div>
+
+            {/* Job Title */}
+            <div className="space-y-1.5">
+              <Label htmlFor="jobTitle" className="text-xs font-semibold">
+                المسمى الوظيفي <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="jobTitle"
+                placeholder="مثال: Account Verification Specialist"
+                {...register("jobTitle")}
+                disabled={isPending}
+                className="bg-muted/40 dark:bg-popover-dark/40"
+              />
+              {errors.jobTitle && (
+                <p className="text-xs text-destructive">
+                  {errors.jobTitle.message}
                 </p>
               )}
             </div>
@@ -266,86 +248,6 @@ export function CreateStaffDialog({
               {errors.password && (
                 <p className="text-xs text-destructive">
                   {errors.password.message}
-                </p>
-              )}
-            </div>
-
-            {/* Job Title */}
-            <div className="space-y-1.5">
-              <Label htmlFor="jobTitle" className="text-xs font-semibold">
-                المسمى الوظيفي
-              </Label>
-              <Input
-                id="jobTitle"
-                placeholder="مثال: مطور برمجيات، مسؤول دعم..."
-                {...register("jobTitle")}
-                disabled={isPending}
-                className="bg-muted/40 dark:bg-popover-dark/40"
-              />
-              {errors.jobTitle && (
-                <p className="text-xs text-destructive">
-                  {errors.jobTitle.message}
-                </p>
-              )}
-            </div>
-
-            {/* Gender */}
-            <div className="space-y-1.5">
-              <Label className="text-xs font-semibold">
-                الجنس <span className="text-destructive">*</span>
-              </Label>
-              <Select
-                value={selectedGender}
-                onValueChange={(val) =>
-                  setValue("gender", val as Gender, {
-                    shouldValidate: true,
-                    shouldDirty: true,
-                  })
-                }
-                disabled={isPending}
-              >
-                <SelectTrigger className="bg-muted/40 dark:bg-popover-dark/40">
-                  <SelectValue placeholder="اختر الجنس" />
-                </SelectTrigger>
-                <SelectContent dir="rtl">
-                  <SelectItem value="MALE">ذكر</SelectItem>
-                  <SelectItem value="FEMALE">أنثى</SelectItem>
-                </SelectContent>
-              </Select>
-              {errors.gender && (
-                <p className="text-xs text-destructive">
-                  {errors.gender.message}
-                </p>
-              )}
-            </div>
-
-            {/* Status */}
-            <div className="space-y-1.5 md:col-span-2">
-              <Label className="text-xs font-semibold">
-                حالة الحساب <span className="text-destructive">*</span>
-              </Label>
-              <Select
-                value={selectedStatus}
-                onValueChange={(val) =>
-                  setValue("status", val as StaffStatus, {
-                    shouldValidate: true,
-                    shouldDirty: true,
-                  })
-                }
-                disabled={isPending}
-              >
-                <SelectTrigger className="bg-muted/40 dark:bg-popover-dark/40">
-                  <SelectValue placeholder="اختر حالة الحساب" />
-                </SelectTrigger>
-                <SelectContent dir="rtl">
-                  <SelectItem value="ACTIVE">نشط (ACTIVE)</SelectItem>
-                  <SelectItem value="PENDING">معلق (PENDING)</SelectItem>
-                  <SelectItem value="SUSPENDED">موقوف (SUSPENDED)</SelectItem>
-                </SelectContent>
-              </Select>
-              {errors.status && (
-                <p className="text-xs text-destructive">
-                  {errors.status.message}
                 </p>
               )}
             </div>
@@ -384,7 +286,6 @@ export function CreateStaffDialog({
               </div>
             </div>
 
-            {/* Permission Checkboxes Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 pt-2">
               {STAFF_PERMISSIONS.map((perm) => {
                 const isChecked = Boolean(selectedPermissions.includes(perm));
