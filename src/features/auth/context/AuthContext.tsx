@@ -44,7 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(async () => {
     try {
-      await authApi.logout();
+      await authApi.logout(getRefreshToken());
     } catch {
       // Ignore network errors during logout
     } finally {

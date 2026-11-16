@@ -1,4 +1,5 @@
 import { Axios } from "@/lib/axios";
+import { getAccessToken } from "@/lib/tokenStorage";
 import type {
   LoginPayload,
   LoginResponse,
@@ -39,7 +40,25 @@ export const authApi = {
     return staffMeMock as unknown as StaffMeResponse;
   },
 
-  logout: async (): Promise<void> => {
-    return Promise.resolve();
+  logout: async (refreshToken?: string | null): Promise<void> => {
+    const accessToken = getAccessToken();
+    await Axios.post(
+      "/auth/logout",
+      refreshToken ? { refresh_token: refreshToken } : undefined,
+      {
+        headers: accessToken
+          ? { Authorization: `Bearer ${accessToken}` }
+          : undefined,
+      },
+    );
+  },
+
+  logoutAll: async (): Promise<void> => {
+    const accessToken = getAccessToken();
+    await Axios.post("/auth/logout-all", undefined, {
+      headers: accessToken
+        ? { Authorization: `Bearer ${accessToken}` }
+        : undefined,
+    });
   },
 };
