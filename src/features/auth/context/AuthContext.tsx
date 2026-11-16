@@ -12,7 +12,6 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   type ReactNode,
 } from "react";
 
@@ -30,10 +29,7 @@ export interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Module-level lock to prevent duplicate concurrent refresh flows across all callers
 let inFlightRefreshPromise: Promise<boolean> | null = null;
-
-const AUTO_REFRESH_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes (300,000 ms)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const {
@@ -44,7 +40,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAuth,
     setAccessToken,
     setUser,
-    setIsInitializing,
   } = useAuthStore();
 
   const logout = useCallback(async () => {
@@ -58,20 +53,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const refreshAuth = useCallback(async (): Promise<boolean> => {
-    // If a refresh flow is already in-flight, reuse the same promise to prevent duplicate requests
     if (inFlightRefreshPromise) {
       return inFlightRefreshPromise;
     }
 
     const storedRefreshToken = getRefreshToken();
     if (!storedRefreshToken) {
-      clearTokens();
       return false;
     }
 
     inFlightRefreshPromise = (async () => {
       try {
-        // Step 1: POST /auth/refresh with { refreshToken } from 1-day Cookie
         const refreshResponse = await authApi.refresh(storedRefreshToken);
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
           refreshResponse.data;
@@ -80,49 +72,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           throw new Error("No access token returned from refresh");
         }
 
-        // Step 2: Update accessToken inside Zustand auth store
         setAccessToken(newAccessToken);
 
-        // Step 3: Update refreshToken in Cookie if a new one was provided
         if (newRefreshToken) {
           setRefreshToken(newRefreshToken);
         }
 
-        // Step 4: Fetch latest user data
         const meResponse = await authApi.getMe();
         const userData = meResponse.data;
-
-        // Verify status
-        if (userData?.status !== "ACTIVE") {
-          throw new Error("Account is not active");
-        }
-
-        // Step 5: If STAFF, fetch permissions and job title from /admin/staff/me
-        if (userData?.adminType === "STAFF") {
-          try {
-            const staffMeResponse = await authApi.getStaffMe();
-            if (staffMeResponse?.data) {
-              userData.permissions = staffMeResponse.data.permissions || [];
-              userData.jobTitle = staffMeResponse.data.jobTitle || null;
-            }
-          } catch (staffError) {
-            console.error("Failed to fetch staff details during refresh:", staffError);
-          }
-        }
-
-        // Step 6: Update Zustand auth store
         setUser(userData);
 
         return true;
-      } catch (error) {
+      } catch {
         clearTokens();
-        if (
-          typeof window !== "undefined" &&
-          window.location.pathname !== "/auth/login" &&
-          !window.location.pathname.startsWith("/auth/")
-        ) {
-          window.location.href = "/auth/login";
-        }
         return false;
       } finally {
         inFlightRefreshPromise = null;
@@ -142,12 +104,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       refreshToken: string;
       user: User;
     }) => {
-      // 1. Store refreshToken only in 1-day Cookie
+      // 1. Store refreshToken securely in browser cookies
       if (newRefreshToken) {
         setRefreshToken(newRefreshToken);
       }
 
-      // 2. Store accessToken and user in Zustand auth store
+      // 2. Store accessToken (in-memory only) and user in Zustand auth store
       setAuth({ accessToken: newAccessToken, user: newUser });
     },
     [setAuth]
@@ -156,63 +118,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const hasPermission = useCallback(
     (permission: StaffPermission): boolean => {
       if (!user) return false;
-      if (user.adminType === "ADMIN") return true;
-      if (user.adminType === "STAFF") {
+      const adminType = (user.admin_type || user.adminType || "").toUpperCase();
+      if (adminType === "ADMIN") return true;
+      if (adminType === "STAFF") {
         return Boolean(user.permissions?.includes(permission));
       }
-      return false;
+      return true;
     },
     [user]
   );
-
-  // Initial auth check on app startup / page reload
-  useEffect(() => {
-    let isMounted = true;
-
-    const initializeAuth = async () => {
-      const storedRefreshToken = getRefreshToken();
-
-      // If there is NO refreshToken in Cookie, finish immediately as unauthenticated
-      if (!storedRefreshToken) {
-        if (isMounted) {
-          clearTokens();
-          setIsInitializing(false);
-        }
-        return;
-      }
-
-      // Execute deduplicated refresh flow: /auth/refresh -> update Zustand -> /users/me
-      try {
-        await refreshAuth();
-      } finally {
-        if (isMounted) {
-          setIsInitializing(false);
-        }
-      }
-    };
-
-    initializeAuth();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [refreshAuth, setIsInitializing]);
-
-  // Automatic 5-minute background token refresh without page reload
-  useEffect(() => {
-    if (!isAuthenticated || !accessToken) return;
-
-    const intervalId = setInterval(async () => {
-      const success = await refreshAuth();
-      if (!success) {
-        clearInterval(intervalId);
-      }
-    }, AUTO_REFRESH_INTERVAL_MS);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [isAuthenticated, accessToken, refreshAuth]);
 
   return (
     <AuthContext.Provider

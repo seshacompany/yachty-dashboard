@@ -2,8 +2,12 @@ import axios, {
   type AxiosInstance,
   isAxiosError,
 } from "axios";
+import { getAccessToken } from "@/lib/tokenStorage";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+const BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  import.meta.env.VITE_API_URL ||
+  "";
 
 export const Axios: AxiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -11,6 +15,14 @@ export const Axios: AxiosInstance = axios.create({
     Accept: "application/json",
     "Content-Type": "application/json",
   },
+});
+
+Axios.interceptors.request.use((config) => {
+  const token = getAccessToken();
+  if (token && config.headers) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 // Backwards-compatible alias for existing codebase
@@ -21,8 +33,13 @@ export function getApiErrorMessage(
   fallback = "حدث خطأ غير متوقع"
 ): string {
   if (isAxiosError(error)) {
-    const data = error.response?.data as { message?: string } | undefined;
-    if (data?.message) return data.message;
+    const data = error.response?.data as { message?: string | string[] } | undefined;
+    if (Array.isArray(data?.message) && data.message.length > 0) {
+      return data.message[0];
+    }
+    if (typeof data?.message === "string" && data.message) {
+      return data.message;
+    }
   }
   if (error instanceof Error && error.message) {
     return error.message;

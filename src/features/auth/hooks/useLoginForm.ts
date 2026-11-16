@@ -19,7 +19,7 @@ import { useAuth } from "./useAuth";
 export type LoginFormBindings = {
   register: UseFormRegister<LoginFormValues>;
   handleSubmit: UseFormHandleSubmit<LoginFormValues>;
-  submitLogin: (data: LoginFormValues) => void;
+  submitLogin: (data: LoginFormValues) => Promise<void>;
   errors: FieldErrors<LoginFormValues>;
   isSubmitting: boolean;
 };
@@ -34,7 +34,9 @@ export function useLoginForm(): LoginFormBindings {
     });
 
   const submitLogin = useCallback(
-    (data: LoginFormValues) => handelLogin(data, setError, navigate, login),
+    async (data: LoginFormValues) => {
+      await handelLogin(data, setError, navigate, login);
+    },
     [setError, navigate, login],
   );
 

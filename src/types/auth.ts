@@ -2,32 +2,33 @@ import type { StaffPermission } from "@/features/employees/types";
 
 export interface User {
   id: string;
-  firstName: string;
-  lastName: string;
+  role: string;
+  admin_type: string | null;
   email: string;
   phone: string | null;
-  gender: string;
-  role: string;
   status: string;
-  adminType: "ADMIN" | "STAFF" | string | null;
-  avatarUrl: string | null;
-  emailVerifiedAt: string | null;
-  phoneVerifiedAt: string | null;
-  lastLoginAt: string | null;
-  createdAt: string;
-  updatedAt: string;
+  email_verified: boolean;
+  email_verified_at: string | null;
+  approved_at: string | null;
+  suspended_at: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+  profile: Record<string, unknown> | null;
+  company: Record<string, unknown> | null;
+  adminType?: "ADMIN" | "STAFF" | string | null;
   jobTitle?: string | null;
   permissions?: StaffPermission[];
 }
 
 export interface LoginPayload {
-  identifier: string;
+  email: string;
   password: string;
 }
 
 export interface LoginResponseData {
-  accessToken: string;
-  refreshToken: string;
+  access_token: string;
+  refresh_token: string;
   user: User;
 }
 

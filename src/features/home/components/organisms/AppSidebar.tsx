@@ -18,13 +18,15 @@ export function AppSidebar() {
   const filteredNavItems = useMemo(() => {
     if (!user) return SIDEBAR_NAV_ITEMS;
 
+    const adminType = (user.admin_type || user.adminType || "").toUpperCase();
+
     // ADMIN has full access to all navigation items
-    if (user.adminType === "ADMIN") {
+    if (adminType === "ADMIN") {
       return SIDEBAR_NAV_ITEMS;
     }
 
     // STAFF only sees items they have explicit permissions for (plus items without permission requirement like Home)
-    if (user.adminType === "STAFF") {
+    if (adminType === "STAFF") {
       const userPermissions = user.permissions || [];
       return SIDEBAR_NAV_ITEMS.filter((item) => {
         if (!item.permission) return true;

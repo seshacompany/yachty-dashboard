@@ -1,14 +1,12 @@
+import { isAxiosError } from "axios";
 import type { UseFormSetError } from "react-hook-form";
 import type { NavigateFunction } from "react-router-dom";
 import { toast } from "sonner";
 import type { LoginFormValues } from "../schemas/login.schema";
 import { authApi } from "../services/authApi";
-import { getApiErrorMessage } from "@/lib/axios";
 import type { User } from "@/types/auth";
-import {
-  setAccessToken,
-  setRefreshToken,
-} from "@/lib/tokenStorage";
+import { setRefreshToken } from "@/lib/tokenStorage";
+import { useAuthStore } from "../store/authStore";
 
 export const handelLogin = async (
   data: LoginFormValues,
@@ -19,65 +17,67 @@ export const handelLogin = async (
     refreshToken: string;
     user: User;
   }) => void
-) => {
+): Promise<void> => {
   try {
     const payload = {
-      identifier: data.email.trim(),
+      email: data.email.trim(),
       password: data.password,
     };
 
     const response = await authApi.login(payload);
+    const responseData = response?.data;
+    const accessToken = responseData?.access_token;
+    const refreshToken = responseData?.refresh_token;
+    const user = responseData?.user;
 
-    if (response?.data?.accessToken) {
-      const { accessToken, refreshToken, user } = response.data;
-
-      // 1. Role validation: Must be ADMIN or STAFF
-      if (user?.adminType !== "ADMIN" && user?.adminType !== "STAFF") {
-        toast.error("لا يمكنك الوصول إلى هذه المنصة");
-        return;
-      }
-
-      // 2. Strict Status Check: Account must be ACTIVE
-      if (user?.status !== "ACTIVE") {
-        toast.error("الحساب غير نشط أو تم إيقافه، يرجى مراجعة الإدارة");
-        return;
-      }
-
-      // 3. Store accessToken temporarily so subsequent API calls include Authorization header
-      setAccessToken(accessToken);
-
-      // 4. If user is STAFF, fetch staff profile and permissions from /admin/staff/me
-      if (user?.adminType === "STAFF") {
-        try {
-          const staffMeResponse = await authApi.getStaffMe();
-          if (staffMeResponse?.data) {
-            user.permissions = staffMeResponse.data.permissions || [];
-            user.jobTitle = staffMeResponse.data.jobTitle || null;
-          }
-        } catch (staffError) {
-          console.error("Failed to fetch staff permissions:", staffError);
-        }
-      }
-
-      // 5. Store refreshToken in 1-day Cookie
-      setRefreshToken(refreshToken);
-
-      // 6. Update auth state in Zustand store & context
-      if (onLoginSuccess) {
-        onLoginSuccess({ accessToken, refreshToken, user });
-      }
-
-      // 7. Show success toast notification
-      toast.success(response.message || "تم تسجيل الدخول بنجاح");
-
-      // 8. Navigate to dashboard
-      navigate("/", { replace: true });
+    if (!accessToken || !user) {
+      throw new Error("Invalid login response");
     }
+
+    // 1. Save refreshToken securely in browser cookies
+    if (refreshToken) {
+      setRefreshToken(refreshToken);
+    }
+
+    // 2. Store accessToken (in-memory only) and user object in Zustand store
+    useAuthStore.getState().setAuth({ accessToken, user });
+
+    if (onLoginSuccess) {
+      onLoginSuccess({ accessToken, refreshToken, user });
+    }
+
+    // 3. Show success feedback
+    toast.success("تم تسجيل الدخول بنجاح");
+
+    // 4. Redirect to root route "/"
+    navigate("/", { replace: true });
   } catch (error) {
-    const errorMessage = getApiErrorMessage(
-      error,
-      "البريد الإلكتروني أو كلمة المرور غير صحيحة"
-    );
+    let errorMessage = "البريد الإلكتروني أو كلمة المرور غير صحيحة";
+
+    if (isAxiosError(error)) {
+      const status = error.response?.status;
+      const serverMsg = (
+        error.response?.data as { message?: string | string[] } | undefined
+      )?.message;
+      const normalizedServerMsg = Array.isArray(serverMsg)
+        ? serverMsg[0]
+        : serverMsg;
+
+      if (status === 401 || status === 400) {
+        if (normalizedServerMsg && /[\u0600-\u06FF]/.test(normalizedServerMsg)) {
+          errorMessage = normalizedServerMsg;
+        } else {
+          errorMessage = "البريد الإلكتروني أو كلمة المرور غير صحيحة";
+        }
+      } else if (!error.response) {
+        errorMessage = "البريد الإلكتروني أو كلمة المرور غير صحيحة";
+      } else if (
+        normalizedServerMsg &&
+        /[\u0600-\u06FF]/.test(normalizedServerMsg)
+      ) {
+        errorMessage = normalizedServerMsg;
+      }
+    }
 
     setError("password", {
       type: "server",

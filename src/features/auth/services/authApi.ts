@@ -1,16 +1,19 @@
+import { Axios } from "@/lib/axios";
 import type {
   LoginPayload,
   LoginResponse,
   MeResponse,
   RefreshResponse,
+  User,
 } from "@/types/auth";
 import type { StaffMeResponse } from "@/features/employees/types";
-import loginStaffMock from "@/data/response/response_login_staff.json";
+import authResponseMock from "@/data/response/response_auth.json";
 import staffMeMock from "@/data/response/response_staff_me.json";
 
 export const authApi = {
-  login: async (_payload?: LoginPayload): Promise<LoginResponse> => {
-    return loginStaffMock as unknown as LoginResponse;
+  login: async (payload: LoginPayload): Promise<LoginResponse> => {
+    const response = await Axios.post<LoginResponse>("/auth/login", payload);
+    return response.data;
   },
 
   refresh: async (_refreshToken: string): Promise<RefreshResponse> => {
@@ -18,8 +21,8 @@ export const authApi = {
       success: true,
       message: "تم تحديث الجلسة بنجاح",
       data: {
-        accessToken: loginStaffMock.data.accessToken,
-        refreshToken: loginStaffMock.data.refreshToken,
+        accessToken: authResponseMock.data.access_token,
+        refreshToken: authResponseMock.data.refresh_token,
       },
     };
   },
@@ -27,8 +30,8 @@ export const authApi = {
   getMe: async (): Promise<MeResponse> => {
     return {
       success: true,
-      message: loginStaffMock.message,
-      data: loginStaffMock.data.user as unknown as MeResponse["data"],
+      message: authResponseMock.message,
+      data: authResponseMock.data.user as User,
     };
   },
 
