@@ -1,12 +1,21 @@
-import type { UpdateUserStatusRequest, UpdateUserStatusResponse } from "../types";
+import { Axios } from "@/lib/axios";
+import { getAccessToken } from "@/lib/tokenStorage";
+import type {
+  UpdateUserStatusRequest,
+  UpdateUserStatusResponse,
+} from "../types";
 
 export const updateUserStatus = async (
-  _id: string,
-  _payload: UpdateUserStatusRequest
+  id: string,
+  payload: UpdateUserStatusRequest,
 ): Promise<UpdateUserStatusResponse> => {
-  return {
-    success: true,
-    message: "تم تحديث حالة المستخدم بنجاح",
-    data: { id: _id, ..._payload },
-  };
+  const token = getAccessToken();
+  const response = await Axios.patch<UpdateUserStatusResponse>(
+    `/admin/users/${id}/status`,
+    payload,
+    {
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    },
+  );
+  return response.data;
 };

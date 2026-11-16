@@ -1,4 +1,8 @@
-import type { TableRow } from "../../types";
+import {
+  STAFF_PERMISSIONS,
+  STAFF_PERMISSION_LABELS,
+  type TableRow,
+} from "../../types";
 import { PowersOneEmployeeDetails } from "./PowersOneEmployeeDetails";
 
 type PowersOneEmployeeProps = {
@@ -12,18 +16,13 @@ export function PowersOneEmployee({ row }: PowersOneEmployeeProps) {
         الصلاحيات الحالية
       </p>
       <div className="grid md:grid-cols-2 gap-2">
-        <PowersOneEmployeeDetails title="العملاء" value={Boolean(row.customers)} />
-        <PowersOneEmployeeDetails title=" أصحاب الوحدات" value={Boolean(row.unity_owners)} />
-        <PowersOneEmployeeDetails title="الوحدات" value={Boolean(row.units)} />
-        <PowersOneEmployeeDetails title="الإعلانات" value={Boolean(row.advertisements)} />
-        <PowersOneEmployeeDetails title="المدفوعات" value={Boolean(row.payments)} />
-        <PowersOneEmployeeDetails title="المحتوى" value={Boolean(row.content)} />
-        <PowersOneEmployeeDetails title="الرسائل" value={Boolean(row.messages)} />
-        <PowersOneEmployeeDetails title="الأسئلة الشائعة" value={Boolean(row.frequently_asked_questions)} />
-        <PowersOneEmployeeDetails title="الشروط والأحكام" value={Boolean(row.terms_and_conditions)} />
-        <PowersOneEmployeeDetails title="المراجعات" value={Boolean(row.reviews)} />
-        <PowersOneEmployeeDetails title="الموظفون" value={Boolean(row.employees)} />
-        <PowersOneEmployeeDetails title="العقارات" value={Boolean(row.real_estate)} />
+        {STAFF_PERMISSIONS.map((perm) => (
+          <PowersOneEmployeeDetails
+            key={perm}
+            title={STAFF_PERMISSION_LABELS[perm]}
+            value={Boolean(row.permissions?.includes(perm))}
+          />
+        ))}
       </div>
     </div>
   );

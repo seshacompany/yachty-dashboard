@@ -1,8 +1,6 @@
-import type { EmployeeNote, GraduateInformation, StudentInformation } from "@/features/customers/types";
-
 export type TableRow = {
   id: string;
-  [key: string]: string | number | boolean | StudentInformation | GraduateInformation | EmployeeNote[] | null;
+  [key: string]: unknown;
 };
 
 export type TableHeader = {

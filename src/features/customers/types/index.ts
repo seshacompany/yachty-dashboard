@@ -1,60 +1,69 @@
-export type UserRole = "SEEKER" | "OWNER" | "ADMIN";
+export type UserRole = "user" | "company" | "admin";
 
-export type UserStatus = "PENDING" | "ACTIVE" | "SUSPENDED";
+export type AdminType = "admin" | "staff";
 
-export type UserGender = "MALE" | "FEMALE";
+export type UserStatus = "pending" | "approved" | "rejected" | "suspended";
 
-export type SortOrder = "ASC" | "DESC";
+export type UserProfile = {
+  full_name: string;
+  address: string | null;
+  identity_documents_submitted: boolean;
+};
+
+export type UserCompany = {
+  company_name: string;
+  registration_number: string | null;
+  address: string | null;
+  identity_documents_submitted: boolean;
+};
 
 export type UserItem = {
   id: string;
-  firstName: string;
-  lastName: string;
+  role: UserRole | string;
+  admin_type: AdminType | string | null;
   email: string;
   phone: string | null;
-  gender: UserGender | string;
-  role: UserRole | string;
   status: UserStatus | string;
-  avatarUrl: string | null;
-  emailVerifiedAt: string | null;
-  phoneVerifiedAt: string | null;
-  lastLoginAt: string | null;
-  createdAt: string;
-  updatedAt: string;
+  email_verified: boolean;
+  email_verified_at: string | null;
+  approved_at: string | null;
+  suspended_at: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+  profile: UserProfile | null;
+  company: UserCompany | null;
 };
 
 export type UsersMeta = {
   page: number;
   limit: number;
-  totalItems: number;
+  total: number;
   totalPages: number;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-};
-
-export type UsersData = {
-  items: UserItem[];
-  meta: UsersMeta;
+  hasPrev: boolean;
+  hasNext: boolean;
 };
 
 export type UsersResponse = {
   success: boolean;
   message: string;
-  data: UsersData;
+  data: UserItem[];
+  meta: UsersMeta;
 };
 
 export type GetUsersParams = {
   page?: number;
   limit?: number;
-  sortBy?: string;
-  sortOrder?: SortOrder;
+  email?: string;
+  phone?: string;
   role?: UserRole;
   status?: UserStatus;
-  email?: string;
+  fromDate?: string;
+  toDate?: string;
 };
 
 export type UpdateUserStatusRequest = {
-  status: "ACTIVE" | "SUSPENDED";
+  status: UserStatus;
 };
 
 export type UpdateUserStatusResponse = {
@@ -69,54 +78,15 @@ export type RestoreUserResponse = {
   data?: unknown;
 };
 
-export type UserStatistics = {
-  totalUsers: number;
-  seekerUsers: number;
-  ownerUsers: number;
-  activeUsers: number;
-};
-
-export type StudentInformation = {
-  university: string;
-  faculty: string;
-  academicYear: string;
-};
-
-export type GraduateInformation = {
-  jobTitle: string;
-  educationLevel: string;
-};
-
-export type EmployeeNote = {
-  note: string;
-  createdAt: string;
-};
-
-export type CustomerDetails = {
-  id: string;
-  fullName: string;
-  governorate: string;
-  gender: string;
-  category: string;
-  email: string;
-  phone: string;
-  status: string;
-  studentInformation: StudentInformation | null;
-  graduateInformation: GraduateInformation | null;
-  employeeNotes: EmployeeNote[];
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type requestBuyType = {
-  id: string;
-  client_name: string;
-  national_id: string;
-  phone_number: string;
-  purpose: string;
-  area: string;
-  unit_type: string;
-  status: string;
-  created_at: string;
-  updated_at: string;
-};
+export function getUserDisplayName(user: UserItem): string {
+  if (user.role === "company" && user.company?.company_name) {
+    return user.company.company_name;
+  }
+  if (user.profile?.full_name) {
+    return user.profile.full_name;
+  }
+  if (user.email) {
+    return user.email.split("@")[0] || user.email;
+  }
+  return user.admin_type || "—";
+}

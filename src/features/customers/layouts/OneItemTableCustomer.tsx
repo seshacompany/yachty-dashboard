@@ -4,7 +4,7 @@ import { PopUpLayout } from "@/layouts/popUp/PopUpLayout";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "@/ui/checkbox";
 import {
-  genderValue,
+  adminTypeValue,
   headers,
   roleBadgeStyles,
   roleValue,
@@ -14,7 +14,12 @@ import {
 import { DetailsCustomer } from "../components/organisms/details/DetailsCustomer";
 import { ChangeUserStatusDialog } from "../components/organisms/ChangeUserStatusDialog";
 import { RestoreUserDialog } from "../components/organisms/RestoreUserDialog";
-import type { UserGender, UserItem, UserRole, UserStatus } from "../types";
+import {
+  getUserDisplayName,
+  type UserItem,
+  type UserRole,
+  type UserStatus,
+} from "../types";
 
 type OneItemTableCustomerProps = {
   user: UserItem;
@@ -31,9 +36,13 @@ export function OneItemTableCustomer({
   const [restoreDialogOpen, setRestoreDialogOpen] = useState(false);
 
   const isSelected = selected.includes(user.id);
+  const displayName = getUserDisplayName(user);
+  const initial = displayName[0]?.toUpperCase() || "U";
+  const isDeleted = user.deleted_at !== null;
+
   const toggleOne = (id: string) => {
     setSelected((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
     );
   };
 
@@ -82,60 +91,76 @@ export function OneItemTableCustomer({
                 <button
                   type="button"
                   onClick={handleOpenRestore}
-                  className="size-8 rounded-lg flex items-center justify-center transition-all cursor-pointer bg-success/15 text-success hover:bg-success hover:text-white"
-                  title="استعادة المستخدم"
+                  className={cn(
+                    "size-8 rounded-lg flex items-center justify-center transition-all cursor-pointer",
+                    isDeleted
+                      ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 ring-1 ring-emerald-500/40 hover:bg-emerald-500 hover:text-white"
+                      : "bg-success/15 text-success hover:bg-success hover:text-white",
+                  )}
+                  title={isDeleted ? "استعادة الحساب المحذوف" : "استعادة المستخدم"}
                 >
                   <RotateCcw className="size-4" />
                 </button>
               </div>
             ) : (
               <PopUpLayout
-                title={`تفاصيل المستخدم - ${user.firstName} ${user.lastName}`}
+                title={`تفاصيل المستخدم - ${displayName}`}
                 content={
                   <>
                     {key === "name" ? (
-                      <div className="flex items-center justify-center gap-2">
-                        {user.avatarUrl ? (
-                          <img
-                            src={user.avatarUrl}
-                            alt=""
-                            className="size-8 rounded-full object-cover"
-                          />
-                        ) : (
-                          <div className="size-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs">
-                            {user.firstName?.[0] || "U"}
-                          </div>
-                        )}
+                      <div className="flex items-center justify-center gap-2.5">
+                        <div className="size-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs shrink-0">
+                          {initial}
+                        </div>
                         <span className="font-semibold text-sidebar dark:text-white text-sm">
-                          {user.firstName} {user.lastName}
+                          {displayName}
                         </span>
                       </div>
                     ) : key === "email" ? (
-                      <span className="text-sidebar/80 dark:text-white/80 text-sm">
-                        {user.email}
-                      </span>
-                    ) : key === "gender" ? (
-                      <span className="text-sidebar/80 dark:text-white/80 text-sm">
-                        {genderValue[user.gender as UserGender] || user.gender || "—"}
-                      </span>
+                      <div className="flex flex-col items-center gap-0.5" dir="ltr">
+                        <span className="text-sidebar/90 dark:text-white/90 text-sm">
+                          {user.email}
+                        </span>
+                        {user.phone && (
+                          <span className="text-sidebar/60 dark:text-white/60 text-xs">
+                            {user.phone}
+                          </span>
+                        )}
+                      </div>
                     ) : key === "role" ? (
-                      <span
-                        className={cn(
-                          "rounded-full px-3 py-1 text-xs font-semibold border mx-auto inline-block",
-                          roleBadgeStyles[user.role as UserRole] || "text-sidebar bg-muted"
+                      <div className="flex flex-col items-center gap-1">
+                        <span
+                          className={cn(
+                            "rounded-full px-3 py-1 text-xs font-semibold border mx-auto inline-block",
+                            roleBadgeStyles[user.role as UserRole] ||
+                              "text-sidebar bg-muted",
+                          )}
+                        >
+                          {roleValue[user.role as UserRole] || user.role}
+                        </span>
+                        {user.role === "admin" && user.admin_type && (
+                          <span className="text-[11px] text-muted-foreground">
+                            {adminTypeValue[user.admin_type] || user.admin_type}
+                          </span>
                         )}
-                      >
-                        {roleValue[user.role as UserRole] || user.role}
-                      </span>
+                      </div>
                     ) : key === "status" ? (
-                      <span
-                        className={cn(
-                          "rounded-full px-3 py-1 text-xs font-semibold border mx-auto inline-block",
-                          statusBadgeStyles[user.status as UserStatus] || "text-sidebar bg-muted"
+                      <div className="flex flex-col items-center gap-1">
+                        <span
+                          className={cn(
+                            "rounded-full px-3 py-1 text-xs font-semibold border mx-auto inline-block",
+                            statusBadgeStyles[user.status as UserStatus] ||
+                              "text-sidebar bg-muted",
+                          )}
+                        >
+                          {statusValue[user.status as UserStatus] || user.status}
+                        </span>
+                        {isDeleted && (
+                          <span className="rounded-full px-2 py-0.5 text-[10px] font-semibold bg-destructive/15 text-destructive border border-destructive/30">
+                            محذوف
+                          </span>
                         )}
-                      >
-                        {statusValue[user.status as UserStatus] || user.status}
-                      </span>
+                      </div>
                     ) : null}
                   </>
                 }

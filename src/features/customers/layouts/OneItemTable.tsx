@@ -4,7 +4,7 @@ import { WhatsappIcon } from "@/shared/icons/WhatsappIcon";
 import type { TableRow } from "@/types/typesLayouts";
 import { Checkbox } from "@/ui/checkbox";
 import { DetailsOneCustomer } from "../components/organisms/detailsOneOrder/DetailsOneCustomer";
-import { categoryValue, genderValue, headers, statusValue } from "../data/tableData";
+import { headers, roleValue, statusValue } from "../data/tableData";
 
 type OneItemTableProps = {
   selected: string[];
@@ -40,10 +40,11 @@ export function OneItemTable({
 
       {headers.map(({ key }, i) => (
         <td key={i} className="p-3 py-5 text-center">
-          {key == "contact" ? (
+          {key === "contact" ? (
             <a
-              href={`https://wa.me/${row["phone_number"]}`}
+              href={`https://wa.me/${String(row["phone"] ?? "")}`}
               target="_blank"
+              rel="noopener noreferrer"
               className={cn(
                 "rounded-4xl flex w-fit px-3 py-2 mx-auto bg-whatsapp hover:bg-whatsapp/90 justify-center transition-colors",
               )}
@@ -52,37 +53,30 @@ export function OneItemTable({
             </a>
           ) : (
             <PopUpLayout
-              title={`تفاصيل العميل ${row["fullName"]}`}
+              title={`تفاصيل العميل ${String(row["email"] ?? "")}`}
               content={
                 <>
-                  {key == "status" ? (
+                  {key === "status" ? (
                     <p
                       className={cn(
                         "rounded-4xl px-4 py-1 w-fit mx-auto",
-                        row[key] == "active"
+                        row[key] === "approved"
                           ? "text-success bg-success/15"
                           : "text-danger bg-danger/15",
                       )}
                     >
-                      {statusValue[`${row[key]}`]}
+                      {statusValue[String(row[key] ?? "")] ?? String(row[key] ?? "—")}
+                    </p>
+                  ) : key === "role" ? (
+                    <p className="text-sidebar/70 dark:text-white/70">
+                      {roleValue[String(row[key] ?? "")] ?? String(row[key] ?? "—")}
                     </p>
                   ) : (
-                    <>
-                      <p className={cn("text-sidebar/70 dark:text-white/70", key == "client_name" ? "text-right" : "")}>
-                        {key === "id"
-                          ? `${String(row["id"]).slice(0, 10)}...`
-                          : key === "gender"
-                            ? genderValue[row[key] as keyof typeof genderValue] ?? row[key]?.toString()
-                            : key === "category"
-                              ? categoryValue[row[key] as keyof typeof categoryValue] ?? row[key]?.toString()
-                              : row[key]?.toString()}
-                      </p>
-                      {key == "fullName" && (
-                        <p className="text-secondary-light text-sm">
-                          {row["phone"]?.toString()}
-                        </p>
-                      )}
-                    </>
+                    <p className="text-sidebar/70 dark:text-white/70">
+                      {key === "id"
+                        ? `${String(row["id"]).slice(0, 10)}...`
+                        : String(row[key] ?? "—")}
+                    </p>
                   )}
                 </>
               }

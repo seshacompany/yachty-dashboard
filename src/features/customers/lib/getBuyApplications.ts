@@ -1,4 +1,15 @@
-import type { requestBuyType } from "../types";
+export type RequestBuyType = {
+  id: string;
+  client_name: string;
+  national_id: string;
+  phone_number: string;
+  purpose: string;
+  area: string;
+  unit_type: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+};
 
 export type GetBuyApplicationsParams = {
   page?: number;
@@ -43,7 +54,7 @@ export type CustomerStatistics = {
 };
 
 export type GetBuyApplicationsResponse = {
-  data: requestBuyType[];
+  data: RequestBuyType[];
   totalPages: number;
   totalItems: number;
   stats: CustomerStatistics;

@@ -5,12 +5,12 @@ import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { statusOptions } from "../../data/optionsData";
 import { useCreateEmployee } from "../../hooks/useCreateEmployee";
 import {
   createEmployeeSchema,
   type CreateEmployeeType,
 } from "../../schemas/create.employee";
+import { STAFF_PERMISSIONS, STAFF_PERMISSION_LABELS } from "../../types";
 import { CheckboxField } from "../atoms/CheckboxField";
 import { InputField } from "../atoms/InputField";
 import { SelectField } from "../atoms/SelectField";
@@ -18,6 +18,11 @@ import { SelectField } from "../atoms/SelectField";
 type FormCreateEmployeeProps = {
   onSuccess?: () => void;
 };
+
+const employeeStatusOptions = [
+  { label: "نشط", value: "approved" },
+  { label: "موقوف", value: "suspended" },
+];
 
 export function FormCreateEmployee({ onSuccess }: FormCreateEmployeeProps) {
   const {
@@ -28,6 +33,19 @@ export function FormCreateEmployee({ onSuccess }: FormCreateEmployeeProps) {
     formState: { errors, isSubmitting },
   } = useForm<CreateEmployeeType>({
     resolver: zodResolver(createEmployeeSchema),
+    defaultValues: {
+      staff_name: "",
+      email: "",
+      password: "",
+      phone: "",
+      jobTitle: "",
+      status: "approved",
+      users: false,
+      staff: false,
+      notifications: false,
+      boat_sales: false,
+      rentals: false,
+    },
   });
 
   const { mutateAsync: createEmployee, isPending } = useCreateEmployee();
@@ -50,9 +68,9 @@ export function FormCreateEmployee({ onSuccess }: FormCreateEmployeeProps) {
       <div className="px-4 pt-4 space-y-4">
         <InputField
           label="الاسم الكامل"
-          name="employee_name"
+          name="staff_name"
           register={register}
-          error={errors.employee_name?.message}
+          error={errors.staff_name?.message}
           type="text"
           placeHolder="أدخل الاسم"
           disabled={submitting}
@@ -80,117 +98,43 @@ export function FormCreateEmployee({ onSuccess }: FormCreateEmployeeProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <InputField
             label="رقم الهاتف"
-            name="phone_number"
+            name="phone"
             register={register}
-            error={errors.phone_number?.message}
+            error={errors.phone?.message}
             type="tel"
-            placeHolder="966501234567"
+            placeHolder="+201012345678"
             disabled={submitting}
           />
           <SelectField
             label="الحالة"
             name="status"
             register={register}
-            options={statusOptions}
+            options={employeeStatusOptions}
             error={errors.status?.message}
             disabled={submitting}
           />
         </div>
         <InputField
-          label="الدور الوظيفي"
-          name="job_title"
+          label="المسمى الوظيفي"
+          name="jobTitle"
           register={register}
-          error={errors.job_title?.message}
+          error={errors.jobTitle?.message}
           type="text"
           placeHolder="مسئول المبيعات"
           disabled={submitting}
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <p className="md:col-span-2 text-lg">الصلاحيات</p>
-          <CheckboxField
-            label="العملاء"
-            name="customers"
-            control={control}
-            error={errors.customers?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            label="أصحاب السكن"
-            name="unity_owners"
-            control={control}
-            error={errors.unity_owners?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            label="الوحدات"
-            name="units"
-            control={control}
-            error={errors.units?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            label="الإعلانات"
-            name="advertisements"
-            control={control}
-            error={errors.advertisements?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            label="المدفوعات"
-            name="payments"
-            control={control}
-            error={errors.payments?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            label="المحتوى"
-            name="content"
-            control={control}
-            error={errors.content?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            label="الرسائل"
-            name="messages"
-            control={control}
-            error={errors.messages?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            label="الأسئلة الشائعة"
-            name="frequently_asked_questions"
-            control={control}
-            error={errors.frequently_asked_questions?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            label="الشروط والاحكام"
-            name="terms_and_conditions"
-            control={control}
-            error={errors.terms_and_conditions?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            label="أراء العملاء"
-            name="reviews"
-            control={control}
-            error={errors.reviews?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            label="الموظفون"
-            name="employees"
-            control={control}
-            error={errors.employees?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            label="العقارات"
-            name="real_estate"
-            control={control}
-            error={errors.real_estate?.message}
-            disabled={submitting}
-          />
+          {STAFF_PERMISSIONS.map((perm) => (
+            <CheckboxField
+              key={perm}
+              label={STAFF_PERMISSION_LABELS[perm]}
+              name={perm}
+              control={control}
+              error={errors[perm]?.message}
+              disabled={submitting}
+            />
+          ))}
         </div>
       </div>
 

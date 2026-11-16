@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Loader2, UserCog } from "lucide-react";
 import { getApiErrorMessage } from "@/lib/axios";
@@ -18,8 +18,12 @@ import {
 import { Button } from "@/shared/ui/button";
 import { cn } from "@/lib/utils";
 import { useUpdateUserStatus } from "../../hooks/useUpdateUserStatus";
-import { statusBadgeStyles, statusValue } from "../../data/tableData";
-import type { UserItem, UserStatus } from "../../types";
+import {
+  statusBadgeStyles,
+  statusOptions,
+  statusValue,
+} from "../../data/tableData";
+import { getUserDisplayName, type UserItem, type UserStatus } from "../../types";
 
 type ChangeUserStatusDialogProps = {
   user: UserItem | null;
@@ -32,23 +36,20 @@ export function ChangeUserStatusDialog({
   open,
   onOpenChange,
 }: ChangeUserStatusDialogProps) {
-  const [selectedStatus, setSelectedStatus] = useState<"ACTIVE" | "SUSPENDED" | "">(
-    ""
-  );
+  const [selectedStatus, setSelectedStatus] = useState<UserStatus | "">("");
 
   const { mutate: updateStatus, isPending } = useUpdateUserStatus();
 
-  const handleOpenChange = (newOpen: boolean) => {
-    if (isPending) return;
-    if (newOpen && user) {
-      const initialStatus =
-        user.status === "ACTIVE" || user.status === "SUSPENDED"
-          ? user.status
-          : "ACTIVE";
-      setSelectedStatus(initialStatus);
-    } else {
+  useEffect(() => {
+    if (open && user) {
+      setSelectedStatus((user.status as UserStatus) || "pending");
+    } else if (!open) {
       setSelectedStatus("");
     }
+  }, [open, user]);
+
+  const handleOpenChange = (newOpen: boolean) => {
+    if (isPending) return;
     onOpenChange(newOpen);
   };
 
@@ -78,7 +79,7 @@ export function ChangeUserStatusDialog({
         onError: (err) => {
           toast.error(getApiErrorMessage(err, "تعذر تغيير حالة المستخدم"));
         },
-      }
+      },
     );
   };
 
@@ -101,23 +102,30 @@ export function ChangeUserStatusDialog({
           {user && (
             <div className="p-3 rounded-lg bg-muted/60 dark:bg-popover-dark/60 text-sm flex flex-col gap-2 border border-sidebar/10 dark:border-white/5">
               <div className="flex justify-between items-center">
-                <span className="text-sidebar/70 dark:text-white/60">الاسم:</span>
+                <span className="text-sidebar/70 dark:text-white/60">
+                  الاسم:
+                </span>
                 <span className="font-semibold text-sidebar dark:text-white">
-                  {user.firstName} {user.lastName}
+                  {getUserDisplayName(user)}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sidebar/70 dark:text-white/60">البريد الإلكتروني:</span>
+                <span className="text-sidebar/70 dark:text-white/60">
+                  البريد الإلكتروني:
+                </span>
                 <span className="text-sidebar/90 dark:text-white/80 text-xs">
                   {user.email}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sidebar/70 dark:text-white/60">الحالة الحالية:</span>
+                <span className="text-sidebar/70 dark:text-white/60">
+                  الحالة الحالية:
+                </span>
                 <span
                   className={cn(
                     "px-2.5 py-0.5 rounded-full text-xs font-semibold border",
-                    statusBadgeStyles[user.status as UserStatus] || "text-sidebar bg-muted"
+                    statusBadgeStyles[user.status as UserStatus] ||
+                      "text-sidebar bg-muted",
                   )}
                 >
                   {statusValue[user.status as UserStatus] || user.status}
@@ -132,17 +140,21 @@ export function ChangeUserStatusDialog({
             </label>
             <Select
               value={selectedStatus}
-              onValueChange={(val) =>
-                setSelectedStatus(val as "ACTIVE" | "SUSPENDED")
-              }
+              onValueChange={(val) => setSelectedStatus(val as UserStatus)}
               disabled={isPending}
             >
               <SelectTrigger className="w-full bg-white dark:bg-card-dark text-sidebar dark:text-white border-sidebar/30 dark:border-white/20">
                 <SelectValue placeholder="اختر الحالة..." />
               </SelectTrigger>
-              <SelectContent className="bg-popover dark:bg-card-dark text-sidebar dark:text-white">
-                <SelectItem value="ACTIVE">نشط</SelectItem>
-                <SelectItem value="SUSPENDED">موقوف</SelectItem>
+              <SelectContent
+                dir="rtl"
+                className="bg-popover dark:bg-card-dark text-sidebar dark:text-white"
+              >
+                {statusOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>

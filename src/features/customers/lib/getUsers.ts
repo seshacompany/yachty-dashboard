@@ -1,42 +1,28 @@
-import type { GetUsersParams, UsersData } from "../types";
-import usersMockData from "@/data/response/response_users.json";
+import { Axios } from "@/lib/axios";
+import { getAccessToken } from "@/lib/tokenStorage";
+import type { GetUsersParams, UsersResponse } from "../types";
+
+const getAuthHeaders = () => {
+  const token = getAccessToken();
+  return token ? { Authorization: `Bearer ${token}` } : undefined;
+};
 
 export const getUsers = async (
-  params: GetUsersParams = {}
-): Promise<UsersData> => {
-  let items = [...usersMockData.data.items];
+  params: GetUsersParams = {},
+): Promise<UsersResponse> => {
+  const cleanParams: Record<string, string | number> = {};
+  if (params.page) cleanParams.page = params.page;
+  if (params.limit) cleanParams.limit = params.limit;
+  if (params.email?.trim()) cleanParams.email = params.email.trim();
+  if (params.phone?.trim()) cleanParams.phone = params.phone.trim();
+  if (params.role) cleanParams.role = params.role;
+  if (params.status) cleanParams.status = params.status;
+  if (params.fromDate) cleanParams.fromDate = params.fromDate;
+  if (params.toDate) cleanParams.toDate = params.toDate;
 
-  if (params.role) {
-    items = items.filter((user) => user.role === params.role);
-  }
-
-  if (params.status) {
-    items = items.filter((user) => user.status === params.status);
-  }
-
-  if (params.email) {
-    const searchEmail = params.email.toLowerCase();
-    items = items.filter((user) =>
-      user.email?.toLowerCase().includes(searchEmail)
-    );
-  }
-
-  const page = params.page ?? 1;
-  const limit = params.limit ?? 10;
-  const totalItems = items.length;
-  const totalPages = Math.ceil(totalItems / limit) || 1;
-  const startIndex = (page - 1) * limit;
-  const paginatedItems = items.slice(startIndex, startIndex + limit);
-
-  return {
-    items: paginatedItems as UsersData["items"],
-    meta: {
-      page,
-      limit,
-      totalItems,
-      totalPages,
-      hasNextPage: page < totalPages,
-      hasPreviousPage: page > 1,
-    },
-  };
+  const response = await Axios.get<UsersResponse>("/admin/users", {
+    params: cleanParams,
+    headers: getAuthHeaders(),
+  });
+  return response.data;
 };

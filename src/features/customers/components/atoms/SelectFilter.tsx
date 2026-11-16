@@ -32,7 +32,7 @@ export function SelectFilter({ label, name, options }: SelectFilterProps) {
       params.set(name, value);
     }
 
-    params.delete("page");
+    params.set("page", "1");
 
     setSearchParams(params);
   };

@@ -12,12 +12,12 @@ type DetailsOneEmployeeProps = {
 };
 
 export function DetailsOneEmployee({ row }: DetailsOneEmployeeProps) {
-  const date = formatDateToDDMMYYYY("2026-04-28T12:21:32.994Z");
-  const employeeName = row.employee_name || `${row.firstName || ""} ${row.lastName || ""}`.trim() || "موظف";
-  const initial = employeeName[0] || "M";
-  const jobTitle = row.job_title || row.jobTitle || "موظف";
+  const date = formatDateToDDMMYYYY(row.created_at || "2026-04-28T12:21:32.994Z");
+  const employeeName = row.staff_name || row.email || "موظف";
+  const initial = employeeName[0]?.toUpperCase() || "M";
+  const jobTitle = row.jobTitle || "موظف";
   const email = row.email || "—";
-  const phone = row.phone_number || row.phone || "—";
+  const phone = row.phone || "—";
 
   return (
     <PopUpLayout

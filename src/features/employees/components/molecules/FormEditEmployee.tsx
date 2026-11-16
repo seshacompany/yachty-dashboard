@@ -5,11 +5,17 @@ import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { statusOptions } from "../../data/optionsData";
 import { useUpdateEmployee } from "../../hooks/useUpdateEmployee";
-import type { Employee } from "../../types";
+import {
+  STAFF_PERMISSIONS,
+  STAFF_PERMISSION_LABELS,
+  type Employee,
+} from "../../types";
 
-import { updateEmployeeSchema, type UpdateEmployeeType } from "../../schemas/update.employee";
+import {
+  updateEmployeeSchema,
+  type UpdateEmployeeType,
+} from "../../schemas/update.employee";
 import { CheckboxField } from "../atoms/CheckboxField";
 import { InputField } from "../atoms/InputField";
 import { SelectField } from "../atoms/SelectField";
@@ -19,7 +25,15 @@ type FormEditEmployeeProps = {
   onSuccess?: () => void;
 };
 
+const employeeStatusOptions = [
+  { label: "نشط", value: "approved" },
+  { label: "موقوف", value: "suspended" },
+];
+
 export function FormEditEmployee({ row, onSuccess }: FormEditEmployeeProps) {
+  const hasPerm = (perm: (typeof STAFF_PERMISSIONS)[number]) =>
+    Boolean(row.permissions?.includes(perm));
+
   const {
     register,
     control,
@@ -28,7 +42,16 @@ export function FormEditEmployee({ row, onSuccess }: FormEditEmployeeProps) {
   } = useForm<UpdateEmployeeType>({
     resolver: zodResolver(updateEmployeeSchema),
     defaultValues: {
-      ...row,
+      staff_name: row.staff_name || "",
+      email: row.email || "",
+      phone: row.phone || "",
+      jobTitle: row.jobTitle || "",
+      status: row.status,
+      users: hasPerm("users"),
+      staff: hasPerm("staff"),
+      notifications: hasPerm("notifications"),
+      boat_sales: hasPerm("boat_sales"),
+      rentals: hasPerm("rentals"),
     },
   });
 
@@ -37,10 +60,18 @@ export function FormEditEmployee({ row, onSuccess }: FormEditEmployeeProps) {
 
   const onSubmit = async (data: UpdateEmployeeType) => {
     try {
+      const permissions = STAFF_PERMISSIONS.filter((perm) => data[perm]);
       const result = await updateEmployeeMutation({
         id: row.id,
         oldData: row,
-        newData: data,
+        newData: {
+          staff_name: data.staff_name,
+          email: data.email,
+          phone: data.phone ?? null,
+          jobTitle: data.jobTitle ?? null,
+          status: data.status,
+          permissions,
+        },
       });
       toast.success(result?.message || "تم التعديل بنجاح");
       onSuccess?.();
@@ -55,11 +86,11 @@ export function FormEditEmployee({ row, onSuccess }: FormEditEmployeeProps) {
     <form dir="rtl" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="px-4 pt-4 space-y-4">
         <InputField
-          defaultValue={row.employee_name}
+          defaultValue={row.staff_name}
           label="الاسم الكامل"
-          name="employee_name"
+          name="staff_name"
           register={register}
-          error={errors.employee_name?.message}
+          error={errors.staff_name?.message}
           type="text"
           placeHolder="أدخل الاسم"
           disabled={submitting}
@@ -77,24 +108,24 @@ export function FormEditEmployee({ row, onSuccess }: FormEditEmployeeProps) {
             disabled={submitting}
           />
           <InputField
-            defaultValue={row.phone_number}
+            defaultValue={row.phone ?? ""}
             label="رقم الهاتف"
-            name="phone_number"
+            name="phone"
             register={register}
-            error={errors.phone_number?.message}
+            error={errors.phone?.message}
             type="tel"
-            placeHolder="966501234567"
+            placeHolder="+201012345678"
             disabled={submitting}
           />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <InputField
-            defaultValue={row.job_title}
-            label="الدور الوظيفي"
-            name="job_title"
+            defaultValue={row.jobTitle ?? ""}
+            label="المسمى الوظيفي"
+            name="jobTitle"
             register={register}
-            error={errors.job_title?.message}
+            error={errors.jobTitle?.message}
             type="text"
             placeHolder="مسئول المبيعات"
             disabled={submitting}
@@ -105,110 +136,27 @@ export function FormEditEmployee({ row, onSuccess }: FormEditEmployeeProps) {
             label="الحالة"
             name="status"
             register={register}
-            options={statusOptions}
+            options={employeeStatusOptions}
             error={errors.status?.message}
             disabled={submitting}
           />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <p className="md:col-span-2 text-lg text-sidebar dark:text-white">الصلاحيات</p>
-          <CheckboxField
-            defaultValue={row.customers}
-            label="العملاء"
-            name="customers"
-            control={control}
-            error={errors.customers?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            defaultValue={row.unity_owners}
-            label="أصحاب السكن"
-            name="unity_owners"
-            control={control}
-            error={errors.unity_owners?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            defaultValue={row.units}
-            label="الوحدات"
-            name="units"
-            control={control}
-            error={errors.units?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            defaultValue={row.advertisements}
-            label="الإعلانات"
-            name="advertisements"
-            control={control}
-            error={errors.advertisements?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            defaultValue={row.payments}
-            label="المدفوعات"
-            name="payments"
-            control={control}
-            error={errors.payments?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            defaultValue={row.content}
-            label="المحتوى"
-            name="content"
-            control={control}
-            error={errors.content?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            defaultValue={row.messages}
-            label="الرسائل"
-            name="messages"
-            control={control}
-            error={errors.messages?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            defaultValue={row.frequently_asked_questions}
-            label="الأسئلة الشائعة"
-            name="frequently_asked_questions"
-            control={control}
-            error={errors.frequently_asked_questions?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            defaultValue={row.terms_and_conditions}
-            label="الشروط والاحكام"
-            name="terms_and_conditions"
-            control={control}
-            error={errors.terms_and_conditions?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            defaultValue={row.reviews}
-            label="أراء العملاء"
-            name="reviews"
-            control={control}
-            error={errors.reviews?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            defaultValue={row.employees}
-            label="الموظفون"
-            name="employees"
-            control={control}
-            error={errors.employees?.message}
-            disabled={submitting}
-          />
-          <CheckboxField
-            defaultValue={row.real_estate}
-            label="العقارات"
-            name="real_estate"
-            control={control}
-            error={errors.real_estate?.message}
-            disabled={submitting}
-          />
+          <p className="md:col-span-2 text-lg text-sidebar dark:text-white">
+            الصلاحيات
+          </p>
+          {STAFF_PERMISSIONS.map((perm) => (
+            <CheckboxField
+              key={perm}
+              defaultValue={hasPerm(perm)}
+              label={STAFF_PERMISSION_LABELS[perm]}
+              name={perm}
+              control={control}
+              error={errors[perm]?.message}
+              disabled={submitting}
+            />
+          ))}
         </div>
       </div>
 

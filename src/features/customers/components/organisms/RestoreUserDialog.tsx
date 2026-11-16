@@ -9,7 +9,7 @@ import {
 } from "@/ui/dialog";
 import { Button } from "@/shared/ui/button";
 import { useRestoreUser } from "../../hooks/useRestoreUser";
-import type { UserItem } from "../../types";
+import { getUserDisplayName, type UserItem } from "../../types";
 
 type RestoreUserDialogProps = {
   user: UserItem | null;
@@ -65,13 +65,17 @@ export function RestoreUserDialog({
           {user && (
             <div className="p-3 rounded-lg bg-muted/60 dark:bg-popover-dark/60 text-sm flex flex-col gap-2 border border-sidebar/10 dark:border-white/5">
               <div className="flex justify-between items-center">
-                <span className="text-sidebar/70 dark:text-white/60">الاسم:</span>
+                <span className="text-sidebar/70 dark:text-white/60">
+                  الاسم:
+                </span>
                 <span className="font-semibold text-sidebar dark:text-white">
-                  {user.firstName} {user.lastName}
+                  {getUserDisplayName(user)}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sidebar/70 dark:text-white/60">البريد الإلكتروني:</span>
+                <span className="text-sidebar/70 dark:text-white/60">
+                  البريد الإلكتروني:
+                </span>
                 <span className="text-sidebar/90 dark:text-white/80 text-xs">
                   {user.email}
                 </span>
