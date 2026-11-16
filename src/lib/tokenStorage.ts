@@ -38,10 +38,11 @@ export const getRefreshToken = (): string | null => {
 export const setRefreshToken = (token: string): void => {
   try {
     Cookies.set(REFRESH_TOKEN_KEY, token, {
-      expires: 1, // Exactly 1 day expiration
+      expires: 1,
       path: "/",
-      sameSite: "lax",
-      secure: typeof window !== "undefined" && window.location.protocol === "https:",
+      sameSite: "strict",
+      secure:
+        typeof window !== "undefined" && window.location.protocol === "https:",
     });
   } catch {
     // Ignore cookie write errors

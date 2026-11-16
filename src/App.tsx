@@ -5,6 +5,8 @@ import { ForgotPassword } from "./features/auth/pages/ForgotPassword";
 import Login from "./features/auth/pages/Login";
 import { ResetPassword } from "./features/auth/pages/ResetPassword";
 import { VerifyOtp } from "./features/auth/pages/VerifyOtp";
+import { ProtectedRoute } from "./features/auth/routes/ProtectedRoute";
+import { PublicRoute } from "./features/auth/routes/PublicRoute";
 import { SIDEBAR_NAV_ITEMS } from "./features/home/data/sidebarNav";
 import DashboardLayout from "./features/home/layouts/DashboardLayout";
 import DashboardPage from "./features/home/pages/DashboardPage";
@@ -16,8 +18,7 @@ export default function App() {
       <Toaster />
       <Routes>
         {/* Public Auth Routes */}
-        {/* <Route element={<PublicRoute />}> */}
-        <Route >
+        <Route element={<PublicRoute />}>
           <Route path="/auth/login" element={<Login />} />
           <Route element={<ForgotPasswordLayout />}>
             <Route path="/auth/forgot-password" element={<ForgotPassword />} />
@@ -27,8 +28,7 @@ export default function App() {
         </Route>
 
         {/* Protected Dashboard Routes */}
-        {/* <Route element={<ProtectedRoute />}> */}
-        <Route >
+        <Route element={<ProtectedRoute />}>
           <Route element={<DashboardLayout />}>
             <Route index element={<DashboardPage />} />
             {SIDEBAR_NAV_ITEMS.filter((item) => item.to !== "/").map((item) => (

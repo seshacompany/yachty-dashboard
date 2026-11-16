@@ -39,12 +39,13 @@ export interface LoginResponse {
 }
 
 export interface RefreshPayload {
-  refreshToken: string;
+  refresh_token: string;
 }
 
 export interface RefreshResponseData {
-  accessToken: string;
-  refreshToken: string;
+  access_token: string;
+  refresh_token?: string;
+  user?: User;
 }
 
 export interface RefreshResponse {
@@ -62,6 +63,7 @@ export interface MeResponse {
 export interface AuthState {
   user: User | null;
   accessToken: string | null;
+  accessTokenExpiresAt: number | null;
   isAuthenticated: boolean;
   isInitializing: boolean;
 }

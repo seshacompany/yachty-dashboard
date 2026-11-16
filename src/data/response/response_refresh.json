@@ -1,0 +1,8 @@
+{
+  "success": true,
+  "message": "Operation completed successfully",
+  "data": {
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMmFjMTY4Mi1kOTMxLTRlMmYtOThhZS1mYjM5YWI4YjNjYWEiLCJzaWQiOiIwOThkOGE1Ny04YTZhLTQxOTUtODQxZS1hZTFkMTViNDFkYTgiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3OTQ4MjgyMjAsImV4cCI6MTc5NDgyOTEyMH0.4jowSKwV6-kvfmAi_p0fEqsBA0dH0fQ4QfaFqWD3WLc",
+    "refresh_token": "098d8a57-8a6a-4195-841e-ae1d15b41da8.328ade412f126b10406affbdd8979ea76241db2b4319ff19655651328527ed05"
+  }
+}

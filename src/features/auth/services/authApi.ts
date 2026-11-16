@@ -17,15 +17,11 @@ export const authApi = {
     return response.data;
   },
 
-  refresh: async (_refreshToken: string): Promise<RefreshResponse> => {
-    return {
-      success: true,
-      message: "تم تحديث الجلسة بنجاح",
-      data: {
-        accessToken: authResponseMock.data.access_token,
-        refreshToken: authResponseMock.data.refresh_token,
-      },
-    };
+  refresh: async (refreshToken: string): Promise<RefreshResponse> => {
+    const response = await Axios.post<RefreshResponse>("/auth/refresh", {
+      refresh_token: refreshToken,
+    });
+    return response.data;
   },
 
   getMe: async (): Promise<MeResponse> => {

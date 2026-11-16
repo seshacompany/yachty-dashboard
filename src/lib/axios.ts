@@ -1,8 +1,18 @@
 import axios, {
+  type AxiosError,
   type AxiosInstance,
+  type InternalAxiosRequestConfig,
   isAxiosError,
 } from "axios";
-import { getAccessToken } from "@/lib/tokenStorage";
+import {
+  clearTokens,
+  getAccessToken,
+  getRefreshToken,
+  setAccessToken,
+  setRefreshToken,
+} from "@/lib/tokenStorage";
+import { useAuthStore } from "@/features/auth/store/authStore";
+import type { RefreshResponse } from "@/types/auth";
 
 const BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
@@ -19,11 +29,138 @@ export const Axios: AxiosInstance = axios.create({
 
 Axios.interceptors.request.use((config) => {
   const token = getAccessToken();
-  if (token && config.headers) {
+  if (token && config.headers && !config.headers.Authorization) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
+
+type RetryableRequestConfig = InternalAxiosRequestConfig & {
+  _retry?: boolean;
+};
+
+type QueuedRequest = {
+  resolve: (token: string) => void;
+  reject: (error: unknown) => void;
+};
+
+let isRefreshing = false;
+let failedQueue: QueuedRequest[] = [];
+
+const processQueue = (error: unknown, token: string | null = null) => {
+  for (const promise of failedQueue) {
+    if (error || !token) {
+      promise.reject(error);
+    } else {
+      promise.resolve(token);
+    }
+  }
+  failedQueue = [];
+};
+
+const redirectToLogin = () => {
+  if (
+    typeof window !== "undefined" &&
+    !window.location.pathname.startsWith("/auth/")
+  ) {
+    window.location.replace("/auth/login");
+  }
+};
+
+const AUTH_BYPASS_PATHS = [
+  "/auth/login",
+  "/auth/refresh",
+  "/auth/logout",
+  "/auth/logout-all",
+];
+
+Axios.interceptors.response.use(
+  (response) => response,
+  async (error: AxiosError) => {
+    const originalRequest = error.config as RetryableRequestConfig | undefined;
+    const status = error.response?.status;
+    const requestUrl = originalRequest?.url || "";
+
+    const shouldSkipRefresh =
+      !originalRequest ||
+      status !== 401 ||
+      originalRequest._retry ||
+      AUTH_BYPASS_PATHS.some((path) => requestUrl.includes(path));
+
+    if (shouldSkipRefresh) {
+      return Promise.reject(error);
+    }
+
+    if (isRefreshing) {
+      return new Promise<string>((resolve, reject) => {
+        failedQueue.push({ resolve, reject });
+      }).then((newToken) => {
+        if (originalRequest.headers) {
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        }
+        return Axios(originalRequest);
+      });
+    }
+
+    originalRequest._retry = true;
+    isRefreshing = true;
+
+    const refreshToken = getRefreshToken();
+    if (!refreshToken) {
+      clearTokens();
+      processQueue(error, null);
+      isRefreshing = false;
+      redirectToLogin();
+      return Promise.reject(error);
+    }
+
+    try {
+      const response = await axios.post<RefreshResponse>(
+        `${BASE_URL}/auth/refresh`,
+        { refresh_token: refreshToken },
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      const newAccessToken = response.data?.data?.access_token;
+      const newRefreshToken = response.data?.data?.refresh_token;
+      const returnedUser = response.data?.data?.user;
+
+      if (!newAccessToken) {
+        throw new Error("No access token returned from refresh");
+      }
+
+      setAccessToken(newAccessToken);
+
+      if (returnedUser) {
+        useAuthStore.getState().setUser(returnedUser);
+      }
+
+      if (newRefreshToken) {
+        setRefreshToken(newRefreshToken);
+      }
+
+      processQueue(null, newAccessToken);
+
+      if (originalRequest.headers) {
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+      }
+
+      return Axios(originalRequest);
+    } catch (refreshError) {
+      clearTokens();
+      processQueue(refreshError, null);
+      redirectToLogin();
+      return Promise.reject(refreshError);
+    } finally {
+      isRefreshing = false;
+    }
+  },
+);
 
 // Backwards-compatible alias for existing codebase
 export const api = Axios;

@@ -12,12 +12,14 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   type ReactNode,
 } from "react";
 
 export interface AuthContextType {
   user: User | null;
   accessToken: string | null;
+  accessTokenExpiresAt: number | null;
   isAuthenticated: boolean;
   isInitializing: boolean;
   login: (data: { accessToken: string; refreshToken: string; user: User }) => void;
@@ -31,15 +33,20 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 let inFlightRefreshPromise: Promise<boolean> | null = null;
 
+// Trigger proactive refresh 30 seconds before the 15-minute access_token expires
+const PROACTIVE_REFRESH_BUFFER_MS = 30 * 1000;
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const {
     user,
     accessToken,
+    accessTokenExpiresAt,
     isAuthenticated,
     isInitializing,
     setAuth,
     setAccessToken,
     setUser,
+    setIsInitializing,
   } = useAuthStore();
 
   const logout = useCallback(async () => {
@@ -59,32 +66,43 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const storedRefreshToken = getRefreshToken();
     if (!storedRefreshToken) {
+      clearTokens();
       return false;
     }
 
     inFlightRefreshPromise = (async () => {
       try {
         const refreshResponse = await authApi.refresh(storedRefreshToken);
-        const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
-          refreshResponse.data;
+        const newAccessToken = refreshResponse.data?.access_token;
+        const newRefreshToken = refreshResponse.data?.refresh_token;
+        const returnedUser = refreshResponse.data?.user;
 
         if (!newAccessToken) {
           throw new Error("No access token returned from refresh");
         }
 
+        // Save new in-memory accessToken (and 15-minute expiry timestamp) in Zustand
         setAccessToken(newAccessToken);
 
+        // Update user data in Zustand if returned by refresh endpoint
+        if (returnedUser) {
+          setUser(returnedUser);
+        }
+
+        // Rotate refresh_token cookie with a fresh 1-day expiry if returned
         if (newRefreshToken) {
           setRefreshToken(newRefreshToken);
         }
 
-        const meResponse = await authApi.getMe();
-        const userData = meResponse.data;
-        setUser(userData);
-
         return true;
       } catch {
         clearTokens();
+        if (
+          typeof window !== "undefined" &&
+          !window.location.pathname.startsWith("/auth/")
+        ) {
+          window.location.replace("/auth/login");
+        }
         return false;
       } finally {
         inFlightRefreshPromise = null;
@@ -104,12 +122,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       refreshToken: string;
       user: User;
     }) => {
-      // 1. Store refreshToken securely in browser cookies
+      // 1. Store refresh_token in 1-day cookie
       if (newRefreshToken) {
         setRefreshToken(newRefreshToken);
       }
 
-      // 2. Store accessToken (in-memory only) and user in Zustand auth store
+      // 2. Store access_token (in-memory only) and user in Zustand store
       setAuth({ accessToken: newAccessToken, user: newUser });
     },
     [setAuth]
@@ -128,11 +146,61 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [user]
   );
 
+  // Silent refresh on app initialization / page reload
+  useEffect(() => {
+    let isMounted = true;
+
+    const initializeAuth = async () => {
+      const storedRefreshToken = getRefreshToken();
+
+      if (!storedRefreshToken) {
+        if (isMounted) {
+          clearTokens();
+          setIsInitializing(false);
+        }
+        return;
+      }
+
+      try {
+        await refreshAuth();
+      } finally {
+        if (isMounted) {
+          setIsInitializing(false);
+        }
+      }
+    };
+
+    initializeAuth();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [refreshAuth, setIsInitializing]);
+
+  // Proactive 15-minute token renewal timer
+  useEffect(() => {
+    if (!accessToken || !accessTokenExpiresAt) return;
+
+    const delayMs = Math.max(
+      0,
+      accessTokenExpiresAt - Date.now() - PROACTIVE_REFRESH_BUFFER_MS,
+    );
+
+    const timerId = setTimeout(() => {
+      void refreshAuth();
+    }, delayMs);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [accessToken, accessTokenExpiresAt, refreshAuth]);
+
   return (
     <AuthContext.Provider
       value={{
         user,
         accessToken,
+        accessTokenExpiresAt,
         isAuthenticated,
         isInitializing,
         login,
