@@ -1,0 +1,88 @@
+{
+  "success": true,
+  "message": "Operation completed successfully",
+  "data": [
+    {
+      "id": "57af131f-a360-4012-b1b5-58b15022119d",
+      "owner_user_id": "9a1c436f-ae49-4eea-ae22-b9c590d2fec8",
+      "status": "approved",
+      "approved_by": "d2ac1682-d931-4e2f-98ae-fb39ab8b3caa",
+      "approved_at": "2026-11-15T14:42:24.605Z",
+      "rejection_reason": null,
+      "published_at": "2026-11-15T14:42:24.605Z",
+      "boat_type": "Speed Boat",
+      "brand": "Sea Ray",
+      "model": "SLX 350",
+      "year_built": 2025,
+      "max_passengers": 15,
+      "length_ft": 55.5,
+      "engine_count": 2,
+      "horsepower_per_engine": 350,
+      "cruising_speed_knots": 28,
+      "cabins": 1,
+      "heads": 1,
+      "location": "El Gouna, Red Sea",
+      "description": "Full-day private rental with snorkeling gear.",
+      "media": [
+        {
+          "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1794753206/yakhty/1794753205995-204932-9781484206485.png",
+          "public_id": "yakhty/1794753205995-204932-9781484206485"
+        },
+        {
+          "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1794753205/yakhty/1794753205995-574117-6db5f1ff6221fbaff601ace85c38a6d3.jpg",
+          "public_id": "yakhty/1794753205995-574117-6db5f1ff6221fbaff601ace85c38a6d3"
+        }
+      ],
+      "equipment_features": [
+        "Sound System",
+        "Snorkeling Gear"
+      ],
+      "daily_price": 14000,
+      "currency": "EGP",
+      "captain_included": true,
+      "fuel_included": true,
+      "departure_point": "Abu Tig Marina, El Gouna",
+      "deposit_type": "fixed",
+      "deposit_value": 5000,
+      "deposit_currency": "EGP",
+      "created_at": "2026-11-15T14:33:26.665Z",
+      "updated_at": "2026-11-15T14:42:23.829Z",
+      "boat_license_images_submitted": true,
+      "boat_license_images": [
+        {
+          "url": "https://res.cloudinary.com/dqdeuu4gd/image/upload/v1794753206/yakhty/1794753206038-709663-9781617291609.png",
+          "public_id": "yakhty/1794753206038-709663-9781617291609"
+        }
+      ],
+      "owner": {
+        "id": "9a1c436f-ae49-4eea-ae22-b9c590d2fec8",
+        "role": "user",
+        "admin_type": null,
+        "email": "ba2662003@gmail.com",
+        "phone": "+201012345677",
+        "status": "approved",
+        "email_verified": true,
+        "email_verified_at": "2026-11-14T11:44:12.351Z",
+        "approved_at": "2026-11-14T21:21:19.358Z",
+        "suspended_at": null,
+        "created_at": "2026-11-14T11:42:51.360Z",
+        "updated_at": "2026-11-14T21:21:19.251Z",
+        "deleted_at": null,
+        "profile": {
+          "full_name": "Mohamed Hassan",
+          "address": "Hurghada Marina, Red Sea, Egypt",
+          "identity_documents_submitted": true
+        },
+        "company": null
+      }
+    }
+  ],
+  "meta": {
+    "page": 1,
+    "limit": 20,
+    "total": 1,
+    "totalPages": 1,
+    "hasPrev": false,
+    "hasNext": false
+  }
+}

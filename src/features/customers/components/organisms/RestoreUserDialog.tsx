@@ -1,15 +1,10 @@
 import { toast } from "sonner";
 import { Loader2, RotateCcw } from "lucide-react";
-import { getApiErrorMessage } from "@/lib/axios";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/dialog";
 import { Button } from "@/shared/ui/button";
 import { useRestoreUser } from "../../hooks/useRestoreUser";
-import { getUserDisplayName, type UserItem } from "../../types";
+import type { UserItem } from "../../types";
+import { UserSummaryCard } from "../molecules/UserSummaryCard";
 
 type RestoreUserDialogProps = {
   user: UserItem | null;
@@ -35,15 +30,7 @@ export function RestoreUserDialog({
       return;
     }
 
-    restore(user.id, {
-      onSuccess: (result) => {
-        toast.success(result?.message || "تم استعادة المستخدم بنجاح");
-        onOpenChange(false);
-      },
-      onError: (err) => {
-        toast.error(getApiErrorMessage(err, "تعذر استعادة المستخدم"));
-      },
-    });
+    restore(user.id, { onSuccess: () => onOpenChange(false) });
   };
 
   return (
@@ -62,26 +49,7 @@ export function RestoreUserDialog({
         </DialogHeader>
 
         <div className="flex flex-col gap-4 pt-2">
-          {user && (
-            <div className="p-3 rounded-lg bg-muted/60 dark:bg-popover-dark/60 text-sm flex flex-col gap-2 border border-sidebar/10 dark:border-white/5">
-              <div className="flex justify-between items-center">
-                <span className="text-sidebar/70 dark:text-white/60">
-                  الاسم:
-                </span>
-                <span className="font-semibold text-sidebar dark:text-white">
-                  {getUserDisplayName(user)}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sidebar/70 dark:text-white/60">
-                  البريد الإلكتروني:
-                </span>
-                <span className="text-sidebar/90 dark:text-white/80 text-xs">
-                  {user.email}
-                </span>
-              </div>
-            </div>
-          )}
+          {user && <UserSummaryCard user={user} />}
 
           <p className="text-sm text-sidebar/80 dark:text-white/70">
             هل أنت متأكد من رغبتك في استعادة هذا المستخدم وإلغاء الحذف؟

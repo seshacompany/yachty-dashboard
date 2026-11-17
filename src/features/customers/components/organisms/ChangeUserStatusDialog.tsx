@@ -1,13 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Loader2, UserCog } from "lucide-react";
-import { getApiErrorMessage } from "@/lib/axios";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -16,14 +10,10 @@ import {
   SelectValue,
 } from "@/ui/select";
 import { Button } from "@/shared/ui/button";
-import { cn } from "@/lib/utils";
 import { useUpdateUserStatus } from "../../hooks/useUpdateUserStatus";
-import {
-  statusBadgeStyles,
-  statusOptions,
-  statusValue,
-} from "../../data/tableData";
-import { getUserDisplayName, type UserItem, type UserStatus } from "../../types";
+import { statusOptions } from "../../data/tableData";
+import type { UserItem, UserStatus } from "../../types";
+import { UserSummaryCard } from "../molecules/UserSummaryCard";
 
 type ChangeUserStatusDialogProps = {
   user: UserItem | null;
@@ -37,7 +27,6 @@ export function ChangeUserStatusDialog({
   onOpenChange,
 }: ChangeUserStatusDialogProps) {
   const [selectedStatus, setSelectedStatus] = useState<UserStatus | "">("");
-
   const { mutate: updateStatus, isPending } = useUpdateUserStatus();
 
   useEffect(() => {
@@ -67,19 +56,8 @@ export function ChangeUserStatusDialog({
     }
 
     updateStatus(
-      {
-        id: user.id,
-        payload: { status: selectedStatus },
-      },
-      {
-        onSuccess: (result) => {
-          toast.success(result?.message || "تم تغيير حالة المستخدم بنجاح");
-          onOpenChange(false);
-        },
-        onError: (err) => {
-          toast.error(getApiErrorMessage(err, "تعذر تغيير حالة المستخدم"));
-        },
-      },
+      { id: user.id, payload: { status: selectedStatus } },
+      { onSuccess: () => onOpenChange(false) },
     );
   };
 
@@ -99,40 +77,7 @@ export function ChangeUserStatusDialog({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 pt-2">
-          {user && (
-            <div className="p-3 rounded-lg bg-muted/60 dark:bg-popover-dark/60 text-sm flex flex-col gap-2 border border-sidebar/10 dark:border-white/5">
-              <div className="flex justify-between items-center">
-                <span className="text-sidebar/70 dark:text-white/60">
-                  الاسم:
-                </span>
-                <span className="font-semibold text-sidebar dark:text-white">
-                  {getUserDisplayName(user)}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sidebar/70 dark:text-white/60">
-                  البريد الإلكتروني:
-                </span>
-                <span className="text-sidebar/90 dark:text-white/80 text-xs">
-                  {user.email}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sidebar/70 dark:text-white/60">
-                  الحالة الحالية:
-                </span>
-                <span
-                  className={cn(
-                    "px-2.5 py-0.5 rounded-full text-xs font-semibold border",
-                    statusBadgeStyles[user.status as UserStatus] ||
-                      "text-sidebar bg-muted",
-                  )}
-                >
-                  {statusValue[user.status as UserStatus] || user.status}
-                </span>
-              </div>
-            </div>
-          )}
+          {user && <UserSummaryCard user={user} showStatus />}
 
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-sidebar dark:text-white">

@@ -1,5 +1,7 @@
+import { getApiErrorMessage } from "@/lib/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateUserStatus } from "../lib/updateUserStatus";
+import { toast } from "sonner";
+import { updateUserStatus } from "../services/users.service";
 import { userKeys } from "./userKeys";
 import type { UpdateUserStatusRequest } from "../types";
 
@@ -14,8 +16,12 @@ export function useUpdateUserStatus() {
       id: string;
       payload: UpdateUserStatusRequest;
     }) => updateUserStatus(id, payload),
-    onSuccess: () => {
+    onSuccess: (result) => {
       queryClient.invalidateQueries({ queryKey: userKeys.all });
+      toast.success(result?.message || "تم تغيير حالة المستخدم بنجاح");
+    },
+    onError: (err) => {
+      toast.error(getApiErrorMessage(err, "تعذر تغيير حالة المستخدم"));
     },
   });
 }

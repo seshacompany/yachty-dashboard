@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { getUsers } from "../lib/getUsers";
+import { getUsers } from "../services/users.service";
 import { userKeys } from "./userKeys";
 import type { GetUsersParams } from "../types";
 

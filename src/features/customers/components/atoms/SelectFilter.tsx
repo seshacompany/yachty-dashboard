@@ -5,7 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/ui/select";
-import { useSearchParams } from "react-router-dom";
+import { useUsersFilters, type UserFilterKey } from "../../hooks/useUsersFilters";
 
 type Option = {
   label: string;
@@ -14,32 +14,20 @@ type Option = {
 
 type SelectFilterProps = {
   label: string;
-  name: string;
+  name: UserFilterKey;
   options: Option[];
 };
 
 export function SelectFilter({ label, name, options }: SelectFilterProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
-
+  const { searchParams, setFilterParam } = useUsersFilters();
   const selectedValue = searchParams.get(name) || "";
-
-  const handleChange = (value: string) => {
-    const params = new URLSearchParams(searchParams);
-
-    if (value === "all") {
-      params.delete(name);
-    } else {
-      params.set(name, value);
-    }
-
-    params.set("page", "1");
-
-    setSearchParams(params);
-  };
 
   return (
     <div className="flex flex-col gap-2">
-      <Select value={selectedValue || "all"} onValueChange={handleChange}>
+      <Select
+        value={selectedValue || "all"}
+        onValueChange={(value) => setFilterParam(name, value)}
+      >
         <SelectTrigger className="w-full bg-secondary text-sidebar dark:bg-popover-dark dark:text-white">
           <SelectValue placeholder={label} />
         </SelectTrigger>

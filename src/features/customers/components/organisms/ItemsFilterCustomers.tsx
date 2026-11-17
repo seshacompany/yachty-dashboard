@@ -1,8 +1,8 @@
 import { RotateCcw } from "lucide-react";
-import { useSearchParams } from "react-router-dom";
 import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
 import { roleOptions, statusOptions } from "../../data/tableData";
+import { useUsersFilters } from "../../hooks/useUsersFilters";
 import { SelectFilter } from "../atoms/SelectFilter";
 
 type ItemsFilterCustomersProps = {
@@ -10,43 +10,8 @@ type ItemsFilterCustomersProps = {
 };
 
 export function ItemsFilterCustomers({ show }: ItemsFilterCustomersProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const fromDate = searchParams.get("fromDate") || "";
-  const toDate = searchParams.get("toDate") || "";
-
-  const hasActiveFilters =
-    searchParams.has("email") ||
-    searchParams.has("phone") ||
-    searchParams.has("role") ||
-    searchParams.has("status") ||
-    searchParams.has("fromDate") ||
-    searchParams.has("toDate");
-
-  const handleDateChange = (key: "fromDate" | "toDate", value: string) => {
-    setSearchParams((prev) => {
-      const params = new URLSearchParams(prev);
-      if (value) {
-        params.set(key, value);
-      } else {
-        params.delete(key);
-      }
-      params.set("page", "1");
-      return params;
-    });
-  };
-
-  const handleResetFilters = () => {
-    const params = new URLSearchParams(searchParams);
-    params.delete("email");
-    params.delete("phone");
-    params.delete("role");
-    params.delete("status");
-    params.delete("fromDate");
-    params.delete("toDate");
-    params.set("page", "1");
-    setSearchParams(params);
-  };
+  const { queryParams, hasActiveFilters, setFilterParam, resetFilters } =
+    useUsersFilters();
 
   if (!show) return null;
 
@@ -59,7 +24,7 @@ export function ItemsFilterCustomers({ show }: ItemsFilterCustomersProps) {
         {hasActiveFilters && (
           <button
             type="button"
-            onClick={handleResetFilters}
+            onClick={resetFilters}
             className="flex items-center gap-1.5 text-xs text-destructive hover:underline cursor-pointer"
           >
             <RotateCcw size={13} />
@@ -94,8 +59,10 @@ export function ItemsFilterCustomers({ show }: ItemsFilterCustomersProps) {
           <Input
             id="fromDate"
             type="date"
-            value={fromDate}
-            onChange={(e) => handleDateChange("fromDate", e.target.value)}
+            value={queryParams.fromDate || ""}
+            onChange={(e) =>
+              setFilterParam("fromDate", e.target.value || undefined)
+            }
             className="w-full bg-white dark:bg-popover-dark text-sidebar dark:text-white border-sidebar/20 dark:border-white/15"
           />
         </div>
@@ -107,8 +74,10 @@ export function ItemsFilterCustomers({ show }: ItemsFilterCustomersProps) {
           <Input
             id="toDate"
             type="date"
-            value={toDate}
-            onChange={(e) => handleDateChange("toDate", e.target.value)}
+            value={queryParams.toDate || ""}
+            onChange={(e) =>
+              setFilterParam("toDate", e.target.value || undefined)
+            }
             className="w-full bg-white dark:bg-popover-dark text-sidebar dark:text-white border-sidebar/20 dark:border-white/15"
           />
         </div>

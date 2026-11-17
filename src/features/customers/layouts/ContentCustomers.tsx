@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
 import { PaginationLayout } from "@/layouts/pagination/PaginationLayout";
 import { TableLayout } from "@/layouts/table/TableLayout";
 import { getApiErrorMessage } from "@/lib/axios";
 import { Button } from "@/shared/ui/button";
 import { headers } from "../data/tableData";
 import { useUsers } from "../hooks/useUsers";
-import type { UserItem, UserRole, UserStatus } from "../types";
+import { useUsersFilters } from "../hooks/useUsersFilters";
+import type { UserItem } from "../types";
 import { OneItemTableCustomer } from "./OneItemTableCustomer";
 
 type ContentCustomersProps = {
@@ -14,27 +14,9 @@ type ContentCustomersProps = {
 };
 
 export function ContentCustomers({ onTotalChange }: ContentCustomersProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const page = Number(searchParams.get("page")) || 1;
-  const limit = Number(searchParams.get("limit")) || 20;
-  const email = searchParams.get("email") || undefined;
-  const phone = searchParams.get("phone") || undefined;
-  const role = (searchParams.get("role") as UserRole) || undefined;
-  const status = (searchParams.get("status") as UserStatus) || undefined;
-  const fromDate = searchParams.get("fromDate") || undefined;
-  const toDate = searchParams.get("toDate") || undefined;
-
-  const { data, isLoading, isError, error, refetch, isFetching } = useUsers({
-    page,
-    limit,
-    email,
-    phone,
-    role,
-    status,
-    fromDate,
-    toDate,
-  });
+  const { queryParams, setPage } = useUsersFilters();
+  const { data, isLoading, isError, error, refetch, isFetching } =
+    useUsers(queryParams);
 
   const totalCount = data?.meta?.total;
 
@@ -43,12 +25,6 @@ export function ContentCustomers({ onTotalChange }: ContentCustomersProps) {
       onTotalChange(totalCount);
     }
   }, [onTotalChange, totalCount]);
-
-  const handlePageChange = (newPage: number) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("page", String(newPage));
-    setSearchParams(params);
-  };
 
   if (isError) {
     return (
@@ -73,6 +49,7 @@ export function ContentCustomers({ onTotalChange }: ContentCustomersProps) {
 
   const items = data?.data ?? [];
   const totalPages = data?.meta?.totalPages ?? 1;
+  const currentPage = queryParams.page ?? 1;
 
   return (
     <div className="w-full flex flex-col gap-6">
@@ -98,8 +75,8 @@ export function ContentCustomers({ onTotalChange }: ContentCustomersProps) {
       {totalPages > 1 && (
         <PaginationLayout
           totalPages={totalPages}
-          currentPage={page}
-          onPageChange={handlePageChange}
+          currentPage={currentPage}
+          onPageChange={setPage}
         />
       )}
     </div>
