@@ -51,6 +51,10 @@ const CustomersPage = lazy(() =>
   import("@/features/customers/pages/CustomersPage").then((m) => ({ default: m.CustomersPage })),
 );
 
+const RentalsPage = lazy(() =>
+  import("@/features/rentals/pages/RentalsPage").then((m) => ({ default: m.RentalsPage })),
+);
+
 export type SidebarNavItemConfig = {
   id: string;
   label: string;
@@ -87,6 +91,7 @@ export const SIDEBAR_NAV_ITEMS: SidebarNavItemConfig[] = [
     title: "إدارة يخوت الإيجار",
     description: "مراجعة واعتماد عروض اليخوت المخصصة للتأجير، جداول الحجوزات والأسعار.",
     to: "/yachts/rental",
+    Children: RentalsPage,
     icon: Anchor,
   },
   {

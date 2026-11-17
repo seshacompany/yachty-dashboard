@@ -37,7 +37,6 @@ export default function App() {
 
             {/* Route Aliases */}
             <Route path="/analytics" element={<Navigate to="/" replace />} />
-            <Route path="/customers" element={<Navigate to="/users" replace />} />
             <Route path="/faq" element={<Navigate to="/frequently-asked-questions" replace />} />
             <Route path="/faqs" element={<Navigate to="/frequently-asked-questions" replace />} />
             <Route path="/terms-conditions" element={<Navigate to="/cms/terms" replace />} />
