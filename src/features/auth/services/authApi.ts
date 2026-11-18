@@ -5,7 +5,13 @@ import type {
   LoginResponse,
   MeResponse,
   RefreshResponse,
+  RequestOtpPayload,
+  RequestOtpResponse,
+  ResetPasswordPayload,
+  ResetPasswordResponse,
   User,
+  VerifyOtpPayload,
+  VerifyOtpResponse,
 } from "@/types/auth";
 import type { StaffMeResponse } from "@/features/employees/types";
 import authResponseMock from "@/data/response/response_auth.json";
@@ -56,5 +62,35 @@ export const authApi = {
         ? { Authorization: `Bearer ${accessToken}` }
         : undefined,
     });
+  },
+
+  requestForgotPasswordOtp: async (
+    payload: RequestOtpPayload,
+  ): Promise<RequestOtpResponse> => {
+    const response = await Axios.post<RequestOtpResponse>(
+      "/auth/forgot-password/request-otp",
+      payload,
+    );
+    return response.data;
+  },
+
+  verifyForgotPasswordOtp: async (
+    payload: VerifyOtpPayload,
+  ): Promise<VerifyOtpResponse> => {
+    const response = await Axios.post<VerifyOtpResponse>(
+      "/auth/forgot-password/verify-otp",
+      payload,
+    );
+    return response.data;
+  },
+
+  resetPassword: async (
+    payload: ResetPasswordPayload,
+  ): Promise<ResetPasswordResponse> => {
+    const response = await Axios.post<ResetPasswordResponse>(
+      "/auth/reset-password",
+      payload,
+    );
+    return response.data;
   },
 };

@@ -1,41 +1,69 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import Cookies from "js-cookie";
-import { useCallback } from "react";
-import { useForm, type FieldErrors, type UseFormHandleSubmit, type UseFormRegister } from "react-hook-form";
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useForm,
+  type FieldErrors,
+  type UseFormHandleSubmit,
+  type UseFormRegister,
+} from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { handleForgotPassword } from "../lib/handleForgotPassword";
 import {
-    forgotPasswordSchema,
-    type ForgotPasswordFormValues,
+  forgotPasswordSchema,
+  type ForgotPasswordFormValues,
 } from "../schemas/forgotPassword.schema";
 
+const REDIRECT_DELAY_MS = 3000;
+
 export type ForgotPasswordFormBindings = {
-    register: UseFormRegister<ForgotPasswordFormValues>;
-    handleSubmit: UseFormHandleSubmit<ForgotPasswordFormValues>;
-    submitForgotPassword: (data: ForgotPasswordFormValues) => void;
-    errors: FieldErrors<ForgotPasswordFormValues>;
-    isSubmitting: boolean;
+  register: UseFormRegister<ForgotPasswordFormValues>;
+  handleSubmit: UseFormHandleSubmit<ForgotPasswordFormValues>;
+  submitForgotPassword: (data: ForgotPasswordFormValues) => Promise<void>;
+  errors: FieldErrors<ForgotPasswordFormValues>;
+  isSubmitting: boolean;
+  successMessage: string | null;
 };
 
-export function useForgotPasswordForm() {
-    const navigate = useNavigate();
+export function useForgotPasswordForm(): ForgotPasswordFormBindings {
+  const navigate = useNavigate();
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const redirectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    const { register, handleSubmit, formState, setError } = useForm<ForgotPasswordFormValues>({
-        resolver: zodResolver(forgotPasswordSchema),
-        defaultValues: { email: "" },
+  useEffect(() => {
+    return () => {
+      if (redirectTimerRef.current) {
+        clearTimeout(redirectTimerRef.current);
+      }
+    };
+  }, []);
+
+  const { register, handleSubmit, formState, setError } =
+    useForm<ForgotPasswordFormValues>({
+      resolver: zodResolver(forgotPasswordSchema),
+      defaultValues: { email: "" },
     });
 
-    const submitForgotPassword = useCallback((data: ForgotPasswordFormValues) => {
-        Cookies.set("email-forgot-password", data.email)
+  const submitForgotPassword = useCallback(
+    async (data: ForgotPasswordFormValues) => {
+      setSuccessMessage(null);
+      await handleForgotPassword(data, setError, (message) => {
+        setSuccessMessage(message);
+        setIsRedirecting(true);
+        redirectTimerRef.current = setTimeout(() => {
+          navigate("/auth/verify-otp");
+        }, REDIRECT_DELAY_MS);
+      });
+    },
+    [navigate, setError],
+  );
 
-        handleForgotPassword(data, setError, navigate)
-    }, [navigate, setError]);
-
-    return {
-        register,
-        handleSubmit,
-        submitForgotPassword,
-        errors: formState.errors,
-        isSubmitting: formState.isSubmitting,
-    };
+  return {
+    register,
+    handleSubmit,
+    submitForgotPassword,
+    errors: formState.errors,
+    isSubmitting: formState.isSubmitting || isRedirecting,
+    successMessage,
+  };
 }

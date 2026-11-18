@@ -60,6 +60,40 @@ export interface MeResponse {
   data: User;
 }
 
+export interface RequestOtpPayload {
+  email: string;
+}
+
+export interface RequestOtpResponse {
+  success: boolean;
+  message: string;
+  data: null;
+}
+
+export interface VerifyOtpPayload {
+  email: string;
+  otp: string;
+}
+
+export interface VerifyOtpResponse {
+  success: boolean;
+  message: string;
+  data: {
+    reset_token: string;
+  };
+}
+
+export interface ResetPasswordPayload {
+  reset_token: string;
+  new_password: string;
+}
+
+export interface ResetPasswordResponse {
+  success: boolean;
+  message: string;
+  data?: null;
+}
+
 export interface AuthState {
   user: User | null;
   accessToken: string | null;

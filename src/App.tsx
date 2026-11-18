@@ -34,14 +34,6 @@ export default function App() {
             {SIDEBAR_NAV_ITEMS.filter((item) => item.to !== "/").map((item) => (
               <Route key={item.id} path={item.to} element={<DashboardPage />} />
             ))}
-
-            {/* Route Aliases */}
-            <Route path="/analytics" element={<Navigate to="/" replace />} />
-            <Route path="/faq" element={<Navigate to="/frequently-asked-questions" replace />} />
-            <Route path="/faqs" element={<Navigate to="/frequently-asked-questions" replace />} />
-            <Route path="/terms-conditions" element={<Navigate to="/cms/terms" replace />} />
-            <Route path="/terms-and-conditions" element={<Navigate to="/cms/terms" replace />} />
-
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Route>

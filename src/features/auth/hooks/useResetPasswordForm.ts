@@ -1,37 +1,79 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import Cookies from "js-cookie";
-import { useCallback } from "react";
-import { useForm, type FieldErrors, type UseFormHandleSubmit, type UseFormRegister } from "react-hook-form";
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useForm,
+  type FieldErrors,
+  type UseFormHandleSubmit,
+  type UseFormRegister,
+} from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { getResetToken } from "../lib/forgotPasswordCookies";
 import { handleResetPassword } from "../lib/handleResetPassword";
-import { resetPasswordSchema, type resetPasswordFormValues } from "../schemas/forgotPassword.schema";
+import {
+  resetPasswordSchema,
+  type ResetPasswordFormValues,
+} from "../schemas/forgotPassword.schema";
+
+const REDIRECT_DELAY_MS = 3000;
 
 export type ResetPasswordFormBindings = {
-    register: UseFormRegister<resetPasswordFormValues>;
-    handleSubmit: UseFormHandleSubmit<resetPasswordFormValues>;
-    submitResetPassword: (data: resetPasswordFormValues) => void;
-    errors: FieldErrors<resetPasswordFormValues>;
-    isSubmitting: boolean;
+  register: UseFormRegister<ResetPasswordFormValues>;
+  handleSubmit: UseFormHandleSubmit<ResetPasswordFormValues>;
+  submitResetPassword: (data: ResetPasswordFormValues) => Promise<void>;
+  errors: FieldErrors<ResetPasswordFormValues>;
+  isSubmitting: boolean;
+  successMessage: string | null;
 };
 
-export function useResetPasswordForm() {
-    const navigate = useNavigate();
-    const email = Cookies.get("email-forgot-password")
+export function useResetPasswordForm(): ResetPasswordFormBindings {
+  const navigate = useNavigate();
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const redirectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    const { register, handleSubmit, formState, setError } = useForm<resetPasswordFormValues>({
-        resolver: zodResolver(resetPasswordSchema),
-        defaultValues: { email: email, newPassword: "" },
+  useEffect(() => {
+    const resetToken = getResetToken();
+    if (!resetToken) {
+      toast.error(
+        "رمز إعادة تعيين كلمة المرور غير موجود أو منتهي الصلاحية، يرجى إعادة المحاولة.",
+      );
+      navigate("/auth/forgot-password", { replace: true });
+    }
+
+    return () => {
+      if (redirectTimerRef.current) {
+        clearTimeout(redirectTimerRef.current);
+      }
+    };
+  }, [navigate]);
+
+  const { register, handleSubmit, formState, setError } =
+    useForm<ResetPasswordFormValues>({
+      resolver: zodResolver(resetPasswordSchema),
+      defaultValues: { newPassword: "" },
     });
 
-    const submitResetPassword = useCallback((data: resetPasswordFormValues) => {
-        handleResetPassword(data, setError, navigate)
-    }, [navigate, setError]);
+  const submitResetPassword = useCallback(
+    async (data: ResetPasswordFormValues) => {
+      setSuccessMessage(null);
+      await handleResetPassword(data, setError, navigate, (message) => {
+        setSuccessMessage(message);
+        setIsRedirecting(true);
+        redirectTimerRef.current = setTimeout(() => {
+          navigate("/auth/login", { replace: true });
+        }, REDIRECT_DELAY_MS);
+      });
+    },
+    [navigate, setError],
+  );
 
-    return {
-        register,
-        handleSubmit,
-        submitResetPassword,
-        errors: formState.errors,
-        isSubmitting: formState.isSubmitting,
-    };
+  return {
+    register,
+    handleSubmit,
+    submitResetPassword,
+    errors: formState.errors,
+    isSubmitting: formState.isSubmitting || isRedirecting,
+    successMessage,
+  };
 }
